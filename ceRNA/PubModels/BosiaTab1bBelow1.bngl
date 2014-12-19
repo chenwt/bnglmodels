@@ -1,0 +1,110 @@
+####################################################################################
+# Generic ceRNA network with 2 ceRNAs targeted by a shared miRNA.
+# Based on Bosia et al. 2013, Table 1
+#
+####################################################################################
+
+begin model
+
+begin parameters
+	a			0.100000
+	g			0.000300
+	gR			0.000400
+	gS			0.000200
+	kR1			0.150000
+	kRc			0.100000
+	kS			0.2
+	kb			0.000300
+	kf			0.000500
+	gCf			g*a			# full complex degradation rate
+	gCp			(1-a)*g		# partial complex degradation
+	
+end parameters
+
+begin molecule types
+	miRNA(c)
+	ceRNA1(m)
+	ceRNA2(m)
+end molecule types
+
+begin seed species
+	miRNA(c)	0
+	ceRNA1(m)	0
+	ceRNA2(m)	0
+end seed species
+
+begin observables 
+	Molecules miRNA_free	miRNA(c)
+	Molecules ceRNA1_free	ceRNA1(m)
+	Molecules ceRNA2_free	ceRNA2(m)
+	#Molecules Complex1		miRNA(c!1).ceRNA1(m!1)
+	#Molecules Complex2 		miRNA(c!1).ceRNA2(m!1)
+end observables
+
+begin reaction rules
+	#### Transcription rules ####
+	# miRNA transcription
+	0 -> miRNA(c) kS
+	
+	# ceRNA1 transcription
+	0 -> ceRNA1(m) kRc
+	
+	# ceRNA2 transcription
+	0 -> ceRNA2(m) kR1
+	
+	#### Complex formation rules ####
+	# ceRNA1-miRNA binding
+	miRNA(c) + ceRNA1(m) <-> miRNA(c!1).ceRNA1(m!1) kf, kb
+	
+	# ceRNA2-miRNA binding
+	miRNA(c) + ceRNA2(m) <-> miRNA(c!1).ceRNA2(m!1) kf, kb
+	
+	#### Degradation rules ####
+	# miRNA degradation
+	miRNA(c) -> 0 gS
+	
+	# ceRNA1 degradation
+	ceRNA1(m) -> 0 gR
+	
+	# ceRNA2 degradation
+	ceRNA2(m) -> 0 gR
+	
+	# miRNA-ceRNA1 full degradation
+	miRNA(c!1).ceRNA1(m!1) -> 0 gCf DeleteMolecules
+	
+	# miRNA-ceRNA2 full degradation
+	miRNA(c!1).ceRNA2(m!1) -> 0 gCf DeleteMolecules
+	
+	# miRNA-ceRNA1 partial degradation
+	miRNA(c!1).ceRNA1(m!1) -> miRNA(c) gCp DeleteMolecules
+	
+	# miRNA-ceRNA2 partial degradation
+	miRNA(c!1).ceRNA2(m!1) -> miRNA(c) gCp DeleteMolecules
+	
+end reaction rules
+
+end model
+
+### Actions ###
+# construct reaction network
+generate_network({overwrite=>1})
+
+setParameter("kS",0.02)
+saveConcentrations()
+simulate({method=>"ode",suffix=>"pre",print_CDAT=>0,t_end=>80000,n_steps=>8000})
+#quit()
+
+resetConcentrations()
+setParameter("kRc",0.2)
+simulate({method=>"ode",suffix=>"fold2",print_CDAT=>0,t_end=>80000,n_steps=>8000})
+
+
+resetConcentrations()
+
+setParameter("kRc",0.5)
+simulate({method=>"ode",suffix=>"fold5",print_CDAT=>0,t_end=>80000,n_steps=>8000})
+
+resetConcentrations()
+
+setParameter("kRc",0.7)
+simulate({method=>"ode",suffix=>"fold7",print_CDAT=>0,t_end=>80000,n_steps=>8000})

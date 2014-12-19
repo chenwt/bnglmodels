@@ -1,0 +1,117 @@
+####################################################################################
+# Basic ceRNA network from Ala et al., 2013.
+# This version includes 3 miRNA and 2 ceRNAs; replicates Fig 4B (bottom).  
+# 
+# Sept. 1, 2014
+#
+####################################################################################
+
+begin model
+
+begin parameters
+	kS		0.028		# miRNA transcription rate
+	kR1		0.25		# ceRNA1 transcription rate (control param)
+	kR2		0.15   		# ceRNA2 transcription rate
+	kR3		0.15		# ceRNA3 transcription rate
+	gR		0.0004		# ceRNA1 degradation rate
+	gS		0.0002  	# miRNA degradation rate
+	kf		0.0006		# complex formation rate
+	kb		0.0003		# complex dissociation rate
+	a		0.2			# miRNA catalyticity level
+	g		kb			# base complex degradation rate
+	gCf		g*a			# full complex degradation rate
+	gCp		(1-a)*g		# partial complex degradation
+	
+end parameters
+
+begin molecule types
+	miRNA1(c)
+	#miRNA2(c)
+	miRNA3(c)
+	ceRNA1(m)
+	ceRNA2(m)
+	ceRNA3(m)
+end molecule types
+
+#begin seed species
+#	miRNA(c)	0
+#	ceRNA1(m)	0
+#	ceRNA2(m)	0
+#end seed species
+
+begin observables 
+	Molecules miRNA1_free	miRNA1(c)
+	#Molecules miRNA2_free	miRNA2(c)
+	Molecules miRNA3_free	miRNA3(c)
+	Molecules ceRNA1_free	ceRNA1(m)
+	Molecules ceRNA2_free	ceRNA2(m)
+	Molecules ceRNA3_free	ceRNA3(m)
+	#Molecules Complex1		miRNA(c!1).ceRNA1(m!1)
+	#Molecules Complex2 		miRNA(c!1).ceRNA2(m!1)
+end observables
+
+begin reaction rules
+	#### Transcription rules ####
+	# miRNA transcription
+	0 -> miRNA1(c) kS
+	#0 -> miRNA2(c) kS
+	0 -> miRNA3(c) kS
+	
+	# ceRNA transcription
+	0 -> ceRNA1(m) kR1
+	0 -> ceRNA2(m) kR2
+	0 -> ceRNA3(m) kR3
+	
+	#### Complex formation rules ####
+	miRNA1(c) + ceRNA1(m) <-> miRNA1(c!1).ceRNA1(m!1) kf, kb
+	miRNA1(c) + ceRNA2(m) <-> miRNA1(c!1).ceRNA2(m!1) kf, kb
+	#miRNA2(c) + ceRNA1(m) <-> miRNA2(c!1).ceRNA1(m!1) kf, kb
+	#miRNA2(c) + ceRNA3(m) <-> miRNA2(c!1).ceRNA3(m!1) kf, kb
+	miRNA3(c) + ceRNA2(m) <-> miRNA3(c!1).ceRNA2(m!1) kf, kb
+	miRNA3(c) + ceRNA3(m) <-> miRNA3(c!1).ceRNA3(m!1) kf, kb
+	
+	#### Degradation rules ####
+	# miRNA degradation
+	miRNA1(c) -> 0 gS
+	#miRNA2(c) -> 0 gS
+	miRNA3(c) -> 0 gS
+	
+	# ceRNA degradation
+	ceRNA1(m) -> 0 gR
+	ceRNA2(m) -> 0 gR
+	ceRNA3(m) -> 0 gR
+	
+	# miRNA-ceRNA full degradation
+	miRNA1(c!1).ceRNA1(m!1) -> 0 gCf DeleteMolecules
+	miRNA1(c!1).ceRNA2(m!1) -> 0 gCf DeleteMolecules
+	#miRNA2(c!1).ceRNA1(m!1) -> 0 gCf DeleteMolecules
+	#miRNA2(c!1).ceRNA3(m!1) -> 0 gCf DeleteMolecules
+	miRNA3(c!1).ceRNA2(m!1) -> 0 gCf DeleteMolecules
+	miRNA3(c!1).ceRNA3(m!1) -> 0 gCf DeleteMolecules
+	
+	# miRNA-ceRNA partial degradation
+	miRNA1(c!1).ceRNA1(m!1) -> miRNA1(c) gCp DeleteMolecules
+	miRNA1(c!1).ceRNA2(m!1) -> miRNA1(c) gCp DeleteMolecules
+	#miRNA2(c!1).ceRNA1(m!1) -> miRNA2(c) gCp DeleteMolecules
+	#miRNA2(c!1).ceRNA3(m!1) -> miRNA2(c) gCp DeleteMolecules
+	miRNA3(c!1).ceRNA2(m!1) -> miRNA3(c) gCp DeleteMolecules
+	miRNA3(c!1).ceRNA3(m!1) -> miRNA3(c) gCp DeleteMolecules
+end reaction rules
+
+end model
+
+### Actions ###
+# construct reaction network
+generate_network({overwrite=>1})
+
+# Equilibration..
+simulate({method=>"ssa",suffix=>"equil",print_CDAT=>0,t_end=>100000,n_steps=>1000})
+
+# simulation
+simulate({method=>"ssa",suffix=>"sim",print_CDAT=>0,t_end=>720000,n_steps=>7200})
+setParameter("kR1", 0.15)
+simulate({method=>"ssa",suffix=>"sim",print_CDAT=>0,continue=>1,t_end=>1296000,n_steps=>5760})
+
+# simulation
+# pre stimulus interval 
+#simulate_ode({suffix=>"sim",t_end=>1800,n_steps=>1800})

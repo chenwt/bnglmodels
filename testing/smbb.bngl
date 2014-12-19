@@ -1,0 +1,56 @@
+begin model
+
+begin parameters
+
+	kon		4
+	koff	1
+	
+	kA		10
+	kB		10
+	gA		1
+	gB		1
+	
+	f		0
+	A_init	1*f
+	B_init	1*f
+	
+end parameters
+
+begin molecule types
+
+	A(b)
+	B(a)
+end molecule types
+
+begin seed species
+	A(b)	A_init
+	B(a) 	B_init
+end seed species
+
+begin observables
+	Molecules	A_free	A(b)
+	Molecules	B_free 	B(a)
+	Molecules	Complex	A(b!1).B(a!1)
+end observables
+
+begin reaction rules
+	0 -> A(b) kA
+	0 -> B(a) kB
+	A(b) -> 0 gA
+	B(a) -> 0 gB
+	
+	A(b) + B(a) <-> A(b!1).B(a!1) kon, koff
+end reaction rules
+
+end model
+
+### Actions ###
+# construct reaction network
+generate_network({overwrite=>1})
+
+# Equilibration..
+simulate({method=>"ode",suffix=>"equil",t_end=>10000,n_steps=>10000})
+
+# simulation
+# pre stimulus interval 
+#simulate_ode({suffix=>"sim",t_end=>1800,n_steps=>1800})

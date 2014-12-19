@@ -1,0 +1,105 @@
+####################################################################################
+# Basic ceRNA network from Ala et al., 2013.
+# This version includes 1 miRNA and two ceRNAs; replicates Fig 1C and 1D.
+# 
+# June 22, 2014
+#
+####################################################################################
+
+begin model
+
+begin parameters
+	kS		0.05		# miRNA transcription rate
+	kR1		0.155		# ceRNA1 transcription rate
+	kR2		0.155   	# ceRNA2 transcription rate, varied between 0.0 and 1.0
+	gR1		0.0004		# ceRNA1 degradation rate
+	gR2		0.0004 		# ceRNA2 degradation rate
+	gS		0.0002  	# miRNA degradation rate
+	kf1		0.0006		# complex formation rate
+	kb1		0.0003		# complex dissociation rate
+	kf2		0.0006		# complex formation rate
+	kb2		0.0003		# complex dissociation rate
+	a		0.1			# miRNA catalyticity level
+	g		0.0003		# base complex degradation rate
+	gCf		g*a			# full complex degradation rate
+	gCp		(1-a)*g		# partial complex degradation
+	
+end parameters
+
+begin molecule types
+	miRNA(c)
+	ceRNA1(m)
+	ceRNA2(m)
+end molecule types
+
+begin seed species
+	miRNA(c)	0
+	ceRNA1(m)	0
+	ceRNA2(m)	0
+end seed species
+
+begin observables 
+	Molecules miRNA_free	miRNA(c)
+	Molecules ceRNA1_free	ceRNA1(m)
+	Molecules ceRNA2_free	ceRNA2(m)
+	Molecules Complex1		miRNA(c!1).ceRNA1(m!1)
+	Molecules Complex2 		miRNA(c!1).ceRNA2(m!1)
+end observables
+
+begin reaction rules
+	#### Transcription rules ####
+	# miRNA transcription
+	0 -> miRNA(c) kS
+	
+	# ceRNA1 transcription
+	0 -> ceRNA1(m) kR1
+	
+	# ceRNA2 transcription
+	0 -> ceRNA2(m) kR2
+	
+	#### Complex formation rules ####
+	# ceRNA1-miRNA binding
+	miRNA(c) + ceRNA1(m) <-> miRNA(c!1).ceRNA1(m!1) kf1, kb1
+	
+	# ceRNA2-miRNA binding
+	miRNA(c) + ceRNA2(m) <-> miRNA(c!1).ceRNA2(m!1) kf2, kb2
+	
+	#### Degradation rules ####
+	# miRNA degradation
+	miRNA(c) -> 0 gS
+	
+	# ceRNA1 degradation
+	ceRNA1(m) -> 0 gR1
+	
+	# ceRNA2 degradation
+	ceRNA2(m) -> 0 gR2
+	
+	# miRNA-ceRNA1 full degradation
+	miRNA(c!1).ceRNA1(m!1) -> 0 gCf DeleteMolecules
+	
+	# miRNA-ceRNA2 full degradation
+	miRNA(c!1).ceRNA2(m!1) -> 0 gCf DeleteMolecules
+	
+	# miRNA-ceRNA1 partial degradation
+	miRNA(c!1).ceRNA1(m!1) -> miRNA(c) gCp DeleteMolecules
+	
+	# miRNA-ceRNA2 partial degradation
+	miRNA(c!1).ceRNA2(m!1) -> miRNA(c) gCp DeleteMolecules
+	
+end reaction rules
+
+end model
+
+### Actions ###
+# construct reaction network
+generate_network({overwrite=>1})
+
+# Equilibration..
+setParameter("kS",0.025)
+simulate({method=>"ode",suffix=>"equil",t_end=>100000,n_steps=>1000})
+
+# simulation
+simulate({method=>"ode",suffix=>"sim",t_end=>20000,n_steps=>2000})
+
+setParameter("kR1",0.5)
+simulate({method=>"ode",continue=>1,suffix=>"sim",t_end=>40000,n_steps=>2000})

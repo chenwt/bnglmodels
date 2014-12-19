@@ -1,0 +1,660 @@
+begin model
+begin parameters
+	a			0.841000
+	b			0.000100
+	dC			0.007000
+	dR			0.000250
+	dT			0.000100
+	gR			0.020000
+	gT			0.024000
+	gT0			0.024000
+	u			0.000100
+end parameters
+
+begin molecule types
+	T0(r)
+	R1(t)
+	T2(r)
+	R3(t)
+	T4(r)
+	R5(t)
+	T6(r)
+	R7(t)
+	T8(r)
+	R9(t)
+	T10(r)
+	R11(t)
+	T12(r)
+	R13(t)
+	T14(r)
+	R15(t)
+	T16(r)
+	R17(t)
+	T18(r)
+	R19(t)
+	T20(r)
+	R21(t)
+	T22(r)
+	R23(t)
+	T24(r)
+	R25(t)
+	T26(r)
+	R27(t)
+	T28(r)
+	R29(t)
+	T30(r)
+	R31(t)
+	T32(r)
+	R33(t)
+	T34(r)
+	R35(t)
+	T36(r)
+	R37(t)
+	T38(r)
+	R39(t)
+	T40(r)
+	R41(t)
+	T42(r)
+	R43(t)
+	T44(r)
+	R45(t)
+	T46(r)
+	R47(t)
+	T48(r)
+	R49(t)
+	T50(r)
+	R51(t)
+	T52(r)
+	R53(t)
+	T54(r)
+	R55(t)
+	T56(r)
+	R57(t)
+	T58(r)
+	R59(t)
+	T60(r)
+	R61(t)
+	T62(r)
+	R63(t)
+	T64(r)
+	R65(t)
+	T66(r)
+	R67(t)
+	T68(r)
+	R69(t)
+	T70(r)
+	R71(t)
+	T72(r)
+	R73(t)
+	T74(r)
+	R75(t)
+	T76(r)
+	R77(t)
+	T78(r)
+	R79(t)
+	T80(r)
+	R81(t)
+	T82(r)
+	R83(t)
+	T84(r)
+	R85(t)
+	T86(r)
+	R87(t)
+	T88(r)
+	R89(t)
+	T90(r)
+	R91(t)
+	T92(r)
+	R93(t)
+	T94(r)
+	R95(t)
+	T96(r)
+	R97(t)
+	T98(r)
+	R99(t)
+end molecule types
+
+begin observables
+	Molecules T0_free			T50(r)
+	Molecules T2_free			T52(r)
+	Molecules T4_free			T54(r)
+	Molecules T6_free			T56(r)
+	Molecules T8_free			T58(r)
+	Molecules T10_free			T60(r)
+	Molecules R1_free			R51(t)
+	Molecules R3_free			R53(t)
+	Molecules R5_free			R55(t)
+	Molecules R7_free			R57(t)
+	Molecules R9_free			R59(t)
+	Molecules R11_free			R61(t)
+end observables
+
+begin reaction rules
+	### regulator transcription
+	0 -> R1(t) gR
+	0 -> R3(t) gR
+	0 -> R5(t) gR
+	0 -> R7(t) gR
+	0 -> R9(t) gR
+	0 -> R11(t) gR
+	0 -> R13(t) gR
+	0 -> R15(t) gR
+	0 -> R17(t) gR
+	0 -> R19(t) gR
+	0 -> R21(t) gR
+	0 -> R23(t) gR
+	0 -> R25(t) gR
+	0 -> R27(t) gR
+	0 -> R29(t) gR
+	0 -> R31(t) gR
+	0 -> R33(t) gR
+	0 -> R35(t) gR
+	0 -> R37(t) gR
+	0 -> R39(t) gR
+	0 -> R41(t) gR
+	0 -> R43(t) gR
+	0 -> R45(t) gR
+	0 -> R47(t) gR
+	0 -> R49(t) gR
+	0 -> R51(t) gR
+	0 -> R53(t) gR
+	0 -> R55(t) gR
+	0 -> R57(t) gR
+	0 -> R59(t) gR
+	0 -> R61(t) gR
+	0 -> R63(t) gR
+	0 -> R65(t) gR
+	0 -> R67(t) gR
+	0 -> R69(t) gR
+	0 -> R71(t) gR
+	0 -> R73(t) gR
+	0 -> R75(t) gR
+	0 -> R77(t) gR
+	0 -> R79(t) gR
+	0 -> R81(t) gR
+	0 -> R83(t) gR
+	0 -> R85(t) gR
+	0 -> R87(t) gR
+	0 -> R89(t) gR
+	0 -> R91(t) gR
+	0 -> R93(t) gR
+	0 -> R95(t) gR
+	0 -> R97(t) gR
+	0 -> R99(t) gR
+
+	### target transcription
+	0 -> T50(r) gT0
+	0 -> T0(r) gT
+	0 -> T2(r) gT
+	0 -> T4(r) gT
+	0 -> T6(r) gT
+	0 -> T8(r) gT
+	0 -> T10(r) gT
+	0 -> T12(r) gT
+	0 -> T14(r) gT
+	0 -> T16(r) gT
+	0 -> T18(r) gT
+	0 -> T20(r) gT
+	0 -> T22(r) gT
+	0 -> T24(r) gT
+	0 -> T26(r) gT
+	0 -> T28(r) gT
+	0 -> T30(r) gT
+	0 -> T32(r) gT
+	0 -> T34(r) gT
+	0 -> T36(r) gT
+	0 -> T38(r) gT
+	0 -> T40(r) gT
+	0 -> T42(r) gT
+	0 -> T44(r) gT
+	0 -> T46(r) gT
+	0 -> T48(r) gT
+	0 -> T52(r) gT
+	0 -> T54(r) gT
+	0 -> T56(r) gT
+	0 -> T58(r) gT
+	0 -> T60(r) gT
+	0 -> T62(r) gT
+	0 -> T64(r) gT
+	0 -> T66(r) gT
+	0 -> T68(r) gT
+	0 -> T70(r) gT
+	0 -> T72(r) gT
+	0 -> T74(r) gT
+	0 -> T76(r) gT
+	0 -> T78(r) gT
+	0 -> T80(r) gT
+	0 -> T82(r) gT
+	0 -> T84(r) gT
+	0 -> T86(r) gT
+	0 -> T88(r) gT
+	0 -> T90(r) gT
+	0 -> T92(r) gT
+	0 -> T94(r) gT
+	0 -> T96(r) gT
+	0 -> T98(r) gT
+
+	### regulator degradation
+	0 -> R1(t) dR
+	0 -> R3(t) dR
+	0 -> R5(t) dR
+	0 -> R7(t) dR
+	0 -> R9(t) dR
+	0 -> R11(t) dR
+	0 -> R13(t) dR
+	0 -> R15(t) dR
+	0 -> R17(t) dR
+	0 -> R19(t) dR
+	0 -> R21(t) dR
+	0 -> R23(t) dR
+	0 -> R25(t) dR
+	0 -> R27(t) dR
+	0 -> R29(t) dR
+	0 -> R31(t) dR
+	0 -> R33(t) dR
+	0 -> R35(t) dR
+	0 -> R37(t) dR
+	0 -> R39(t) dR
+	0 -> R41(t) dR
+	0 -> R43(t) dR
+	0 -> R45(t) dR
+	0 -> R47(t) dR
+	0 -> R49(t) dR
+	0 -> R51(t) dR
+	0 -> R53(t) dR
+	0 -> R55(t) dR
+	0 -> R57(t) dR
+	0 -> R59(t) dR
+	0 -> R61(t) dR
+	0 -> R63(t) dR
+	0 -> R65(t) dR
+	0 -> R67(t) dR
+	0 -> R69(t) dR
+	0 -> R71(t) dR
+	0 -> R73(t) dR
+	0 -> R75(t) dR
+	0 -> R77(t) dR
+	0 -> R79(t) dR
+	0 -> R81(t) dR
+	0 -> R83(t) dR
+	0 -> R85(t) dR
+	0 -> R87(t) dR
+	0 -> R89(t) dR
+	0 -> R91(t) dR
+	0 -> R93(t) dR
+	0 -> R95(t) dR
+	0 -> R97(t) dR
+	0 -> R99(t) dR
+
+	### target degradation
+	0 -> T0(r) dT
+	0 -> T2(r) dT
+	0 -> T4(r) dT
+	0 -> T6(r) dT
+	0 -> T8(r) dT
+	0 -> T10(r) dT
+	0 -> T12(r) dT
+	0 -> T14(r) dT
+	0 -> T16(r) dT
+	0 -> T18(r) dT
+	0 -> T20(r) dT
+	0 -> T22(r) dT
+	0 -> T24(r) dT
+	0 -> T26(r) dT
+	0 -> T28(r) dT
+	0 -> T30(r) dT
+	0 -> T32(r) dT
+	0 -> T34(r) dT
+	0 -> T36(r) dT
+	0 -> T38(r) dT
+	0 -> T40(r) dT
+	0 -> T42(r) dT
+	0 -> T44(r) dT
+	0 -> T46(r) dT
+	0 -> T48(r) dT
+	0 -> T50(r) dT
+	0 -> T52(r) dT
+	0 -> T54(r) dT
+	0 -> T56(r) dT
+	0 -> T58(r) dT
+	0 -> T60(r) dT
+	0 -> T62(r) dT
+	0 -> T64(r) dT
+	0 -> T66(r) dT
+	0 -> T68(r) dT
+	0 -> T70(r) dT
+	0 -> T72(r) dT
+	0 -> T74(r) dT
+	0 -> T76(r) dT
+	0 -> T78(r) dT
+	0 -> T80(r) dT
+	0 -> T82(r) dT
+	0 -> T84(r) dT
+	0 -> T86(r) dT
+	0 -> T88(r) dT
+	0 -> T90(r) dT
+	0 -> T92(r) dT
+	0 -> T94(r) dT
+	0 -> T96(r) dT
+	0 -> T98(r) dT
+
+	### complex formation
+	T0(r) + R1(t) <-> T0(r!1).R1(t!1) b, u
+	R1(t) + T2(r) <-> R1(t!1).T2(r!1) b, u
+	T2(r) + R3(t) <-> T2(r!1).R3(t!1) b, u
+	R3(t) + T4(r) <-> R3(t!1).T4(r!1) b, u
+	T4(r) + R5(t) <-> T4(r!1).R5(t!1) b, u
+	R5(t) + T6(r) <-> R5(t!1).T6(r!1) b, u
+	T6(r) + R7(t) <-> T6(r!1).R7(t!1) b, u
+	R7(t) + T8(r) <-> R7(t!1).T8(r!1) b, u
+	T8(r) + R9(t) <-> T8(r!1).R9(t!1) b, u
+	R9(t) + T10(r) <-> R9(t!1).T10(r!1) b, u
+	T10(r) + R11(t) <-> T10(r!1).R11(t!1) b, u
+	R11(t) + T12(r) <-> R11(t!1).T12(r!1) b, u
+	T12(r) + R13(t) <-> T12(r!1).R13(t!1) b, u
+	R13(t) + T14(r) <-> R13(t!1).T14(r!1) b, u
+	T14(r) + R15(t) <-> T14(r!1).R15(t!1) b, u
+	R15(t) + T16(r) <-> R15(t!1).T16(r!1) b, u
+	T16(r) + R17(t) <-> T16(r!1).R17(t!1) b, u
+	R17(t) + T18(r) <-> R17(t!1).T18(r!1) b, u
+	T18(r) + R19(t) <-> T18(r!1).R19(t!1) b, u
+	R19(t) + T20(r) <-> R19(t!1).T20(r!1) b, u
+	T20(r) + R21(t) <-> T20(r!1).R21(t!1) b, u
+	R21(t) + T22(r) <-> R21(t!1).T22(r!1) b, u
+	T22(r) + R23(t) <-> T22(r!1).R23(t!1) b, u
+	R23(t) + T24(r) <-> R23(t!1).T24(r!1) b, u
+	T24(r) + R25(t) <-> T24(r!1).R25(t!1) b, u
+	R25(t) + T26(r) <-> R25(t!1).T26(r!1) b, u
+	T26(r) + R27(t) <-> T26(r!1).R27(t!1) b, u
+	R27(t) + T28(r) <-> R27(t!1).T28(r!1) b, u
+	T28(r) + R29(t) <-> T28(r!1).R29(t!1) b, u
+	R29(t) + T30(r) <-> R29(t!1).T30(r!1) b, u
+	T30(r) + R31(t) <-> T30(r!1).R31(t!1) b, u
+	R31(t) + T32(r) <-> R31(t!1).T32(r!1) b, u
+	T32(r) + R33(t) <-> T32(r!1).R33(t!1) b, u
+	R33(t) + T34(r) <-> R33(t!1).T34(r!1) b, u
+	T34(r) + R35(t) <-> T34(r!1).R35(t!1) b, u
+	R35(t) + T36(r) <-> R35(t!1).T36(r!1) b, u
+	T36(r) + R37(t) <-> T36(r!1).R37(t!1) b, u
+	R37(t) + T38(r) <-> R37(t!1).T38(r!1) b, u
+	T38(r) + R39(t) <-> T38(r!1).R39(t!1) b, u
+	R39(t) + T40(r) <-> R39(t!1).T40(r!1) b, u
+	T40(r) + R41(t) <-> T40(r!1).R41(t!1) b, u
+	R41(t) + T42(r) <-> R41(t!1).T42(r!1) b, u
+	T42(r) + R43(t) <-> T42(r!1).R43(t!1) b, u
+	R43(t) + T44(r) <-> R43(t!1).T44(r!1) b, u
+	T44(r) + R45(t) <-> T44(r!1).R45(t!1) b, u
+	R45(t) + T46(r) <-> R45(t!1).T46(r!1) b, u
+	T46(r) + R47(t) <-> T46(r!1).R47(t!1) b, u
+	R47(t) + T48(r) <-> R47(t!1).T48(r!1) b, u
+	T48(r) + R49(t) <-> T48(r!1).R49(t!1) b, u
+	R49(t) + T50(r) <-> R49(t!1).T50(r!1) b, u
+	T50(r) + R51(t) <-> T50(r!1).R51(t!1) b, u
+	R51(t) + T52(r) <-> R51(t!1).T52(r!1) b, u
+	T52(r) + R53(t) <-> T52(r!1).R53(t!1) b, u
+	R53(t) + T54(r) <-> R53(t!1).T54(r!1) b, u
+	T54(r) + R55(t) <-> T54(r!1).R55(t!1) b, u
+	R55(t) + T56(r) <-> R55(t!1).T56(r!1) b, u
+	T56(r) + R57(t) <-> T56(r!1).R57(t!1) b, u
+	R57(t) + T58(r) <-> R57(t!1).T58(r!1) b, u
+	T58(r) + R59(t) <-> T58(r!1).R59(t!1) b, u
+	R59(t) + T60(r) <-> R59(t!1).T60(r!1) b, u
+	T60(r) + R61(t) <-> T60(r!1).R61(t!1) b, u
+	R61(t) + T62(r) <-> R61(t!1).T62(r!1) b, u
+	T62(r) + R63(t) <-> T62(r!1).R63(t!1) b, u
+	R63(t) + T64(r) <-> R63(t!1).T64(r!1) b, u
+	T64(r) + R65(t) <-> T64(r!1).R65(t!1) b, u
+	R65(t) + T66(r) <-> R65(t!1).T66(r!1) b, u
+	T66(r) + R67(t) <-> T66(r!1).R67(t!1) b, u
+	R67(t) + T68(r) <-> R67(t!1).T68(r!1) b, u
+	T68(r) + R69(t) <-> T68(r!1).R69(t!1) b, u
+	R69(t) + T70(r) <-> R69(t!1).T70(r!1) b, u
+	T70(r) + R71(t) <-> T70(r!1).R71(t!1) b, u
+	R71(t) + T72(r) <-> R71(t!1).T72(r!1) b, u
+	T72(r) + R73(t) <-> T72(r!1).R73(t!1) b, u
+	R73(t) + T74(r) <-> R73(t!1).T74(r!1) b, u
+	T74(r) + R75(t) <-> T74(r!1).R75(t!1) b, u
+	R75(t) + T76(r) <-> R75(t!1).T76(r!1) b, u
+	T76(r) + R77(t) <-> T76(r!1).R77(t!1) b, u
+	R77(t) + T78(r) <-> R77(t!1).T78(r!1) b, u
+	T78(r) + R79(t) <-> T78(r!1).R79(t!1) b, u
+	R79(t) + T80(r) <-> R79(t!1).T80(r!1) b, u
+	T80(r) + R81(t) <-> T80(r!1).R81(t!1) b, u
+	R81(t) + T82(r) <-> R81(t!1).T82(r!1) b, u
+	T82(r) + R83(t) <-> T82(r!1).R83(t!1) b, u
+	R83(t) + T84(r) <-> R83(t!1).T84(r!1) b, u
+	T84(r) + R85(t) <-> T84(r!1).R85(t!1) b, u
+	R85(t) + T86(r) <-> R85(t!1).T86(r!1) b, u
+	T86(r) + R87(t) <-> T86(r!1).R87(t!1) b, u
+	R87(t) + T88(r) <-> R87(t!1).T88(r!1) b, u
+	T88(r) + R89(t) <-> T88(r!1).R89(t!1) b, u
+	R89(t) + T90(r) <-> R89(t!1).T90(r!1) b, u
+	T90(r) + R91(t) <-> T90(r!1).R91(t!1) b, u
+	R91(t) + T92(r) <-> R91(t!1).T92(r!1) b, u
+	T92(r) + R93(t) <-> T92(r!1).R93(t!1) b, u
+	R93(t) + T94(r) <-> R93(t!1).T94(r!1) b, u
+	T94(r) + R95(t) <-> T94(r!1).R95(t!1) b, u
+	R95(t) + T96(r) <-> R95(t!1).T96(r!1) b, u
+	T96(r) + R97(t) <-> T96(r!1).R97(t!1) b, u
+	R97(t) + T98(r) <-> R97(t!1).T98(r!1) b, u
+	T98(r) + R99(t) <-> T98(r!1).R99(t!1) b, u
+
+	### full complex degradation
+	T0(r!1).R1(t!1) -> 0 a*dC DeleteMolecules
+	R1(t!1).T2(r!1) -> 0 a*dC DeleteMolecules
+	T2(r!1).R3(t!1) -> 0 a*dC DeleteMolecules
+	R3(t!1).T4(r!1) -> 0 a*dC DeleteMolecules
+	T4(r!1).R5(t!1) -> 0 a*dC DeleteMolecules
+	R5(t!1).T6(r!1) -> 0 a*dC DeleteMolecules
+	T6(r!1).R7(t!1) -> 0 a*dC DeleteMolecules
+	R7(t!1).T8(r!1) -> 0 a*dC DeleteMolecules
+	T8(r!1).R9(t!1) -> 0 a*dC DeleteMolecules
+	R9(t!1).T10(r!1) -> 0 a*dC DeleteMolecules
+	T10(r!1).R11(t!1) -> 0 a*dC DeleteMolecules
+	R11(t!1).T12(r!1) -> 0 a*dC DeleteMolecules
+	T12(r!1).R13(t!1) -> 0 a*dC DeleteMolecules
+	R13(t!1).T14(r!1) -> 0 a*dC DeleteMolecules
+	T14(r!1).R15(t!1) -> 0 a*dC DeleteMolecules
+	R15(t!1).T16(r!1) -> 0 a*dC DeleteMolecules
+	T16(r!1).R17(t!1) -> 0 a*dC DeleteMolecules
+	R17(t!1).T18(r!1) -> 0 a*dC DeleteMolecules
+	T18(r!1).R19(t!1) -> 0 a*dC DeleteMolecules
+	R19(t!1).T20(r!1) -> 0 a*dC DeleteMolecules
+	T20(r!1).R21(t!1) -> 0 a*dC DeleteMolecules
+	R21(t!1).T22(r!1) -> 0 a*dC DeleteMolecules
+	T22(r!1).R23(t!1) -> 0 a*dC DeleteMolecules
+	R23(t!1).T24(r!1) -> 0 a*dC DeleteMolecules
+	T24(r!1).R25(t!1) -> 0 a*dC DeleteMolecules
+	R25(t!1).T26(r!1) -> 0 a*dC DeleteMolecules
+	T26(r!1).R27(t!1) -> 0 a*dC DeleteMolecules
+	R27(t!1).T28(r!1) -> 0 a*dC DeleteMolecules
+	T28(r!1).R29(t!1) -> 0 a*dC DeleteMolecules
+	R29(t!1).T30(r!1) -> 0 a*dC DeleteMolecules
+	T30(r!1).R31(t!1) -> 0 a*dC DeleteMolecules
+	R31(t!1).T32(r!1) -> 0 a*dC DeleteMolecules
+	T32(r!1).R33(t!1) -> 0 a*dC DeleteMolecules
+	R33(t!1).T34(r!1) -> 0 a*dC DeleteMolecules
+	T34(r!1).R35(t!1) -> 0 a*dC DeleteMolecules
+	R35(t!1).T36(r!1) -> 0 a*dC DeleteMolecules
+	T36(r!1).R37(t!1) -> 0 a*dC DeleteMolecules
+	R37(t!1).T38(r!1) -> 0 a*dC DeleteMolecules
+	T38(r!1).R39(t!1) -> 0 a*dC DeleteMolecules
+	R39(t!1).T40(r!1) -> 0 a*dC DeleteMolecules
+	T40(r!1).R41(t!1) -> 0 a*dC DeleteMolecules
+	R41(t!1).T42(r!1) -> 0 a*dC DeleteMolecules
+	T42(r!1).R43(t!1) -> 0 a*dC DeleteMolecules
+	R43(t!1).T44(r!1) -> 0 a*dC DeleteMolecules
+	T44(r!1).R45(t!1) -> 0 a*dC DeleteMolecules
+	R45(t!1).T46(r!1) -> 0 a*dC DeleteMolecules
+	T46(r!1).R47(t!1) -> 0 a*dC DeleteMolecules
+	R47(t!1).T48(r!1) -> 0 a*dC DeleteMolecules
+	T48(r!1).R49(t!1) -> 0 a*dC DeleteMolecules
+	R49(t!1).T50(r!1) -> 0 a*dC DeleteMolecules
+	T50(r!1).R51(t!1) -> 0 a*dC DeleteMolecules
+	R51(t!1).T52(r!1) -> 0 a*dC DeleteMolecules
+	T52(r!1).R53(t!1) -> 0 a*dC DeleteMolecules
+	R53(t!1).T54(r!1) -> 0 a*dC DeleteMolecules
+	T54(r!1).R55(t!1) -> 0 a*dC DeleteMolecules
+	R55(t!1).T56(r!1) -> 0 a*dC DeleteMolecules
+	T56(r!1).R57(t!1) -> 0 a*dC DeleteMolecules
+	R57(t!1).T58(r!1) -> 0 a*dC DeleteMolecules
+	T58(r!1).R59(t!1) -> 0 a*dC DeleteMolecules
+	R59(t!1).T60(r!1) -> 0 a*dC DeleteMolecules
+	T60(r!1).R61(t!1) -> 0 a*dC DeleteMolecules
+	R61(t!1).T62(r!1) -> 0 a*dC DeleteMolecules
+	T62(r!1).R63(t!1) -> 0 a*dC DeleteMolecules
+	R63(t!1).T64(r!1) -> 0 a*dC DeleteMolecules
+	T64(r!1).R65(t!1) -> 0 a*dC DeleteMolecules
+	R65(t!1).T66(r!1) -> 0 a*dC DeleteMolecules
+	T66(r!1).R67(t!1) -> 0 a*dC DeleteMolecules
+	R67(t!1).T68(r!1) -> 0 a*dC DeleteMolecules
+	T68(r!1).R69(t!1) -> 0 a*dC DeleteMolecules
+	R69(t!1).T70(r!1) -> 0 a*dC DeleteMolecules
+	T70(r!1).R71(t!1) -> 0 a*dC DeleteMolecules
+	R71(t!1).T72(r!1) -> 0 a*dC DeleteMolecules
+	T72(r!1).R73(t!1) -> 0 a*dC DeleteMolecules
+	R73(t!1).T74(r!1) -> 0 a*dC DeleteMolecules
+	T74(r!1).R75(t!1) -> 0 a*dC DeleteMolecules
+	R75(t!1).T76(r!1) -> 0 a*dC DeleteMolecules
+	T76(r!1).R77(t!1) -> 0 a*dC DeleteMolecules
+	R77(t!1).T78(r!1) -> 0 a*dC DeleteMolecules
+	T78(r!1).R79(t!1) -> 0 a*dC DeleteMolecules
+	R79(t!1).T80(r!1) -> 0 a*dC DeleteMolecules
+	T80(r!1).R81(t!1) -> 0 a*dC DeleteMolecules
+	R81(t!1).T82(r!1) -> 0 a*dC DeleteMolecules
+	T82(r!1).R83(t!1) -> 0 a*dC DeleteMolecules
+	R83(t!1).T84(r!1) -> 0 a*dC DeleteMolecules
+	T84(r!1).R85(t!1) -> 0 a*dC DeleteMolecules
+	R85(t!1).T86(r!1) -> 0 a*dC DeleteMolecules
+	T86(r!1).R87(t!1) -> 0 a*dC DeleteMolecules
+	R87(t!1).T88(r!1) -> 0 a*dC DeleteMolecules
+	T88(r!1).R89(t!1) -> 0 a*dC DeleteMolecules
+	R89(t!1).T90(r!1) -> 0 a*dC DeleteMolecules
+	T90(r!1).R91(t!1) -> 0 a*dC DeleteMolecules
+	R91(t!1).T92(r!1) -> 0 a*dC DeleteMolecules
+	T92(r!1).R93(t!1) -> 0 a*dC DeleteMolecules
+	R93(t!1).T94(r!1) -> 0 a*dC DeleteMolecules
+	T94(r!1).R95(t!1) -> 0 a*dC DeleteMolecules
+	R95(t!1).T96(r!1) -> 0 a*dC DeleteMolecules
+	T96(r!1).R97(t!1) -> 0 a*dC DeleteMolecules
+	R97(t!1).T98(r!1) -> 0 a*dC DeleteMolecules
+	T98(r!1).R99(t!1) -> 0 a*dC DeleteMolecules
+
+	### partial complex degradation
+	T0(r!1).R1(t!1) -> R1(t) (1-a)*dC DeleteMolecules
+	R1(t!1).T2(r!1) -> R1(t) (1-a)*dC DeleteMolecules
+	T2(r!1).R3(t!1) -> R3(t) (1-a)*dC DeleteMolecules
+	R3(t!1).T4(r!1) -> R3(t) (1-a)*dC DeleteMolecules
+	T4(r!1).R5(t!1) -> R5(t) (1-a)*dC DeleteMolecules
+	R5(t!1).T6(r!1) -> R5(t) (1-a)*dC DeleteMolecules
+	T6(r!1).R7(t!1) -> R7(t) (1-a)*dC DeleteMolecules
+	R7(t!1).T8(r!1) -> R7(t) (1-a)*dC DeleteMolecules
+	T8(r!1).R9(t!1) -> R9(t) (1-a)*dC DeleteMolecules
+	R9(t!1).T10(r!1) -> R9(t) (1-a)*dC DeleteMolecules
+	T10(r!1).R11(t!1) -> R11(t) (1-a)*dC DeleteMolecules
+	R11(t!1).T12(r!1) -> R11(t) (1-a)*dC DeleteMolecules
+	T12(r!1).R13(t!1) -> R13(t) (1-a)*dC DeleteMolecules
+	R13(t!1).T14(r!1) -> R13(t) (1-a)*dC DeleteMolecules
+	T14(r!1).R15(t!1) -> R15(t) (1-a)*dC DeleteMolecules
+	R15(t!1).T16(r!1) -> R15(t) (1-a)*dC DeleteMolecules
+	T16(r!1).R17(t!1) -> R17(t) (1-a)*dC DeleteMolecules
+	R17(t!1).T18(r!1) -> R17(t) (1-a)*dC DeleteMolecules
+	T18(r!1).R19(t!1) -> R19(t) (1-a)*dC DeleteMolecules
+	R19(t!1).T20(r!1) -> R19(t) (1-a)*dC DeleteMolecules
+	T20(r!1).R21(t!1) -> R21(t) (1-a)*dC DeleteMolecules
+	R21(t!1).T22(r!1) -> R21(t) (1-a)*dC DeleteMolecules
+	T22(r!1).R23(t!1) -> R23(t) (1-a)*dC DeleteMolecules
+	R23(t!1).T24(r!1) -> R23(t) (1-a)*dC DeleteMolecules
+	T24(r!1).R25(t!1) -> R25(t) (1-a)*dC DeleteMolecules
+	R25(t!1).T26(r!1) -> R25(t) (1-a)*dC DeleteMolecules
+	T26(r!1).R27(t!1) -> R27(t) (1-a)*dC DeleteMolecules
+	R27(t!1).T28(r!1) -> R27(t) (1-a)*dC DeleteMolecules
+	T28(r!1).R29(t!1) -> R29(t) (1-a)*dC DeleteMolecules
+	R29(t!1).T30(r!1) -> R29(t) (1-a)*dC DeleteMolecules
+	T30(r!1).R31(t!1) -> R31(t) (1-a)*dC DeleteMolecules
+	R31(t!1).T32(r!1) -> R31(t) (1-a)*dC DeleteMolecules
+	T32(r!1).R33(t!1) -> R33(t) (1-a)*dC DeleteMolecules
+	R33(t!1).T34(r!1) -> R33(t) (1-a)*dC DeleteMolecules
+	T34(r!1).R35(t!1) -> R35(t) (1-a)*dC DeleteMolecules
+	R35(t!1).T36(r!1) -> R35(t) (1-a)*dC DeleteMolecules
+	T36(r!1).R37(t!1) -> R37(t) (1-a)*dC DeleteMolecules
+	R37(t!1).T38(r!1) -> R37(t) (1-a)*dC DeleteMolecules
+	T38(r!1).R39(t!1) -> R39(t) (1-a)*dC DeleteMolecules
+	R39(t!1).T40(r!1) -> R39(t) (1-a)*dC DeleteMolecules
+	T40(r!1).R41(t!1) -> R41(t) (1-a)*dC DeleteMolecules
+	R41(t!1).T42(r!1) -> R41(t) (1-a)*dC DeleteMolecules
+	T42(r!1).R43(t!1) -> R43(t) (1-a)*dC DeleteMolecules
+	R43(t!1).T44(r!1) -> R43(t) (1-a)*dC DeleteMolecules
+	T44(r!1).R45(t!1) -> R45(t) (1-a)*dC DeleteMolecules
+	R45(t!1).T46(r!1) -> R45(t) (1-a)*dC DeleteMolecules
+	T46(r!1).R47(t!1) -> R47(t) (1-a)*dC DeleteMolecules
+	R47(t!1).T48(r!1) -> R47(t) (1-a)*dC DeleteMolecules
+	T48(r!1).R49(t!1) -> R49(t) (1-a)*dC DeleteMolecules
+	R49(t!1).T50(r!1) -> R49(t) (1-a)*dC DeleteMolecules
+	T50(r!1).R51(t!1) -> R51(t) (1-a)*dC DeleteMolecules
+	R51(t!1).T52(r!1) -> R51(t) (1-a)*dC DeleteMolecules
+	T52(r!1).R53(t!1) -> R53(t) (1-a)*dC DeleteMolecules
+	R53(t!1).T54(r!1) -> R53(t) (1-a)*dC DeleteMolecules
+	T54(r!1).R55(t!1) -> R55(t) (1-a)*dC DeleteMolecules
+	R55(t!1).T56(r!1) -> R55(t) (1-a)*dC DeleteMolecules
+	T56(r!1).R57(t!1) -> R57(t) (1-a)*dC DeleteMolecules
+	R57(t!1).T58(r!1) -> R57(t) (1-a)*dC DeleteMolecules
+	T58(r!1).R59(t!1) -> R59(t) (1-a)*dC DeleteMolecules
+	R59(t!1).T60(r!1) -> R59(t) (1-a)*dC DeleteMolecules
+	T60(r!1).R61(t!1) -> R61(t) (1-a)*dC DeleteMolecules
+	R61(t!1).T62(r!1) -> R61(t) (1-a)*dC DeleteMolecules
+	T62(r!1).R63(t!1) -> R63(t) (1-a)*dC DeleteMolecules
+	R63(t!1).T64(r!1) -> R63(t) (1-a)*dC DeleteMolecules
+	T64(r!1).R65(t!1) -> R65(t) (1-a)*dC DeleteMolecules
+	R65(t!1).T66(r!1) -> R65(t) (1-a)*dC DeleteMolecules
+	T66(r!1).R67(t!1) -> R67(t) (1-a)*dC DeleteMolecules
+	R67(t!1).T68(r!1) -> R67(t) (1-a)*dC DeleteMolecules
+	T68(r!1).R69(t!1) -> R69(t) (1-a)*dC DeleteMolecules
+	R69(t!1).T70(r!1) -> R69(t) (1-a)*dC DeleteMolecules
+	T70(r!1).R71(t!1) -> R71(t) (1-a)*dC DeleteMolecules
+	R71(t!1).T72(r!1) -> R71(t) (1-a)*dC DeleteMolecules
+	T72(r!1).R73(t!1) -> R73(t) (1-a)*dC DeleteMolecules
+	R73(t!1).T74(r!1) -> R73(t) (1-a)*dC DeleteMolecules
+	T74(r!1).R75(t!1) -> R75(t) (1-a)*dC DeleteMolecules
+	R75(t!1).T76(r!1) -> R75(t) (1-a)*dC DeleteMolecules
+	T76(r!1).R77(t!1) -> R77(t) (1-a)*dC DeleteMolecules
+	R77(t!1).T78(r!1) -> R77(t) (1-a)*dC DeleteMolecules
+	T78(r!1).R79(t!1) -> R79(t) (1-a)*dC DeleteMolecules
+	R79(t!1).T80(r!1) -> R79(t) (1-a)*dC DeleteMolecules
+	T80(r!1).R81(t!1) -> R81(t) (1-a)*dC DeleteMolecules
+	R81(t!1).T82(r!1) -> R81(t) (1-a)*dC DeleteMolecules
+	T82(r!1).R83(t!1) -> R83(t) (1-a)*dC DeleteMolecules
+	R83(t!1).T84(r!1) -> R83(t) (1-a)*dC DeleteMolecules
+	T84(r!1).R85(t!1) -> R85(t) (1-a)*dC DeleteMolecules
+	R85(t!1).T86(r!1) -> R85(t) (1-a)*dC DeleteMolecules
+	T86(r!1).R87(t!1) -> R87(t) (1-a)*dC DeleteMolecules
+	R87(t!1).T88(r!1) -> R87(t) (1-a)*dC DeleteMolecules
+	T88(r!1).R89(t!1) -> R89(t) (1-a)*dC DeleteMolecules
+	R89(t!1).T90(r!1) -> R89(t) (1-a)*dC DeleteMolecules
+	T90(r!1).R91(t!1) -> R91(t) (1-a)*dC DeleteMolecules
+	R91(t!1).T92(r!1) -> R91(t) (1-a)*dC DeleteMolecules
+	T92(r!1).R93(t!1) -> R93(t) (1-a)*dC DeleteMolecules
+	R93(t!1).T94(r!1) -> R93(t) (1-a)*dC DeleteMolecules
+	T94(r!1).R95(t!1) -> R95(t) (1-a)*dC DeleteMolecules
+	R95(t!1).T96(r!1) -> R95(t) (1-a)*dC DeleteMolecules
+	T96(r!1).R97(t!1) -> R97(t) (1-a)*dC DeleteMolecules
+	R97(t!1).T98(r!1) -> R97(t) (1-a)*dC DeleteMolecules
+	T98(r!1).R99(t!1) -> R99(t) (1-a)*dC DeleteMolecules
+end reaction rules
+
+end model
+
+
+
+
+### Actions ###
+# construct reaction network
+generate_network({overwrite=>1})
+
+# Equilibration..
+simulate({method=>"ode",suffix=>"equil",print_CDAT=>0,t_end=>5000,n_steps=>500})
+
+# sim
+#setParameter("gT0",0.02396)
+simulate({method=>"ode",suffix=>"sim",print_CDAT=>0,t_end=>8000000,n_steps=>8000})
+

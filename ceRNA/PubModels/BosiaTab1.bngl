@@ -1,0 +1,677 @@
+####################################################################################
+# Generic ceRNA network with 100 ceRNAs targeted by a shared miRNA.
+# Based on Bosia et al. 2013, Table 1
+#
+####################################################################################
+
+begin model
+begin parameters
+	a			0.100000
+	g			0.000300
+	gR			0.000400
+	gS			0.000200
+	kR			0.150000
+	kRc			0.100000
+	kS			0.05
+	kb			0.000300
+	kf			0.000500
+end parameters
+
+begin molecule types
+	ceRNA1(m)
+	ceRNA2(m)
+	ceRNA3(m)
+	ceRNA4(m)
+	ceRNA5(m)
+	ceRNA6(m)
+	ceRNA7(m)
+	ceRNA8(m)
+	ceRNA9(m)
+	ceRNA10(m)
+	ceRNA11(m)
+	ceRNA12(m)
+	ceRNA13(m)
+	ceRNA14(m)
+	ceRNA15(m)
+	ceRNA16(m)
+	ceRNA17(m)
+	ceRNA18(m)
+	ceRNA19(m)
+	ceRNA20(m)
+	ceRNA21(m)
+	ceRNA22(m)
+	ceRNA23(m)
+	ceRNA24(m)
+	ceRNA25(m)
+	ceRNA26(m)
+	ceRNA27(m)
+	ceRNA28(m)
+	ceRNA29(m)
+	ceRNA30(m)
+	ceRNA31(m)
+	ceRNA32(m)
+	ceRNA33(m)
+	ceRNA34(m)
+	ceRNA35(m)
+	ceRNA36(m)
+	ceRNA37(m)
+	ceRNA38(m)
+	ceRNA39(m)
+	ceRNA40(m)
+	ceRNA41(m)
+	ceRNA42(m)
+	ceRNA43(m)
+	ceRNA44(m)
+	ceRNA45(m)
+	ceRNA46(m)
+	ceRNA47(m)
+	ceRNA48(m)
+	ceRNA49(m)
+	ceRNA50(m)
+	ceRNA51(m)
+	ceRNA52(m)
+	ceRNA53(m)
+	ceRNA54(m)
+	ceRNA55(m)
+	ceRNA56(m)
+	ceRNA57(m)
+	ceRNA58(m)
+	ceRNA59(m)
+	ceRNA60(m)
+	ceRNA61(m)
+	ceRNA62(m)
+	ceRNA63(m)
+	ceRNA64(m)
+	ceRNA65(m)
+	ceRNA66(m)
+	ceRNA67(m)
+	ceRNA68(m)
+	ceRNA69(m)
+	ceRNA70(m)
+	ceRNA71(m)
+	ceRNA72(m)
+	ceRNA73(m)
+	ceRNA74(m)
+	ceRNA75(m)
+	ceRNA76(m)
+	ceRNA77(m)
+	ceRNA78(m)
+	ceRNA79(m)
+	ceRNA80(m)
+	ceRNA81(m)
+	ceRNA82(m)
+	ceRNA83(m)
+	ceRNA84(m)
+	ceRNA85(m)
+	ceRNA86(m)
+	ceRNA87(m)
+	ceRNA88(m)
+	ceRNA89(m)
+	ceRNA90(m)
+	ceRNA91(m)
+	ceRNA92(m)
+	ceRNA93(m)
+	ceRNA94(m)
+	ceRNA95(m)
+	ceRNA96(m)
+	ceRNA97(m)
+	ceRNA98(m)
+	ceRNA99(m)
+	ceRNA100(m)
+	miRNA1(c)
+end molecule types
+
+begin observables
+	Molecules ceRNA1_free			ceRNA1(m)
+	Molecules ceRNA2_free			ceRNA2(m)
+	Molecules miRNA1_free			miRNA1(c)
+end observables
+
+begin reaction rules
+	### miRNA transcription
+	0 -> miRNA1(c) kS
+
+	### ceRNA transcription
+	0 -> ceRNA1(m) kRc
+	0 -> ceRNA2(m) kR
+	0 -> ceRNA3(m) kR
+	0 -> ceRNA4(m) kR
+	0 -> ceRNA5(m) kR
+	0 -> ceRNA6(m) kR
+	0 -> ceRNA7(m) kR
+	0 -> ceRNA8(m) kR
+	0 -> ceRNA9(m) kR
+	0 -> ceRNA10(m) kR
+	0 -> ceRNA11(m) kR
+	0 -> ceRNA12(m) kR
+	0 -> ceRNA13(m) kR
+	0 -> ceRNA14(m) kR
+	0 -> ceRNA15(m) kR
+	0 -> ceRNA16(m) kR
+	0 -> ceRNA17(m) kR
+	0 -> ceRNA18(m) kR
+	0 -> ceRNA19(m) kR
+	0 -> ceRNA20(m) kR
+	0 -> ceRNA21(m) kR
+	0 -> ceRNA22(m) kR
+	0 -> ceRNA23(m) kR
+	0 -> ceRNA24(m) kR
+	0 -> ceRNA25(m) kR
+	0 -> ceRNA26(m) kR
+	0 -> ceRNA27(m) kR
+	0 -> ceRNA28(m) kR
+	0 -> ceRNA29(m) kR
+	0 -> ceRNA30(m) kR
+	0 -> ceRNA31(m) kR
+	0 -> ceRNA32(m) kR
+	0 -> ceRNA33(m) kR
+	0 -> ceRNA34(m) kR
+	0 -> ceRNA35(m) kR
+	0 -> ceRNA36(m) kR
+	0 -> ceRNA37(m) kR
+	0 -> ceRNA38(m) kR
+	0 -> ceRNA39(m) kR
+	0 -> ceRNA40(m) kR
+	0 -> ceRNA41(m) kR
+	0 -> ceRNA42(m) kR
+	0 -> ceRNA43(m) kR
+	0 -> ceRNA44(m) kR
+	0 -> ceRNA45(m) kR
+	0 -> ceRNA46(m) kR
+	0 -> ceRNA47(m) kR
+	0 -> ceRNA48(m) kR
+	0 -> ceRNA49(m) kR
+	0 -> ceRNA50(m) kR
+	0 -> ceRNA51(m) kR
+	0 -> ceRNA52(m) kR
+	0 -> ceRNA53(m) kR
+	0 -> ceRNA54(m) kR
+	0 -> ceRNA55(m) kR
+	0 -> ceRNA56(m) kR
+	0 -> ceRNA57(m) kR
+	0 -> ceRNA58(m) kR
+	0 -> ceRNA59(m) kR
+	0 -> ceRNA60(m) kR
+	0 -> ceRNA61(m) kR
+	0 -> ceRNA62(m) kR
+	0 -> ceRNA63(m) kR
+	0 -> ceRNA64(m) kR
+	0 -> ceRNA65(m) kR
+	0 -> ceRNA66(m) kR
+	0 -> ceRNA67(m) kR
+	0 -> ceRNA68(m) kR
+	0 -> ceRNA69(m) kR
+	0 -> ceRNA70(m) kR
+	0 -> ceRNA71(m) kR
+	0 -> ceRNA72(m) kR
+	0 -> ceRNA73(m) kR
+	0 -> ceRNA74(m) kR
+	0 -> ceRNA75(m) kR
+	0 -> ceRNA76(m) kR
+	0 -> ceRNA77(m) kR
+	0 -> ceRNA78(m) kR
+	0 -> ceRNA79(m) kR
+	0 -> ceRNA80(m) kR
+	0 -> ceRNA81(m) kR
+	0 -> ceRNA82(m) kR
+	0 -> ceRNA83(m) kR
+	0 -> ceRNA84(m) kR
+	0 -> ceRNA85(m) kR
+	0 -> ceRNA86(m) kR
+	0 -> ceRNA87(m) kR
+	0 -> ceRNA88(m) kR
+	0 -> ceRNA89(m) kR
+	0 -> ceRNA90(m) kR
+	0 -> ceRNA91(m) kR
+	0 -> ceRNA92(m) kR
+	0 -> ceRNA93(m) kR
+	0 -> ceRNA94(m) kR
+	0 -> ceRNA95(m) kR
+	0 -> ceRNA96(m) kR
+	0 -> ceRNA97(m) kR
+	0 -> ceRNA98(m) kR
+	0 -> ceRNA99(m) kR
+	0 -> ceRNA100(m) kR
+
+	### miRNA degradation
+	0 -> miRNA1(c) gS
+
+	### ceRNA degradation
+	0 -> ceRNA1(m) gR
+	0 -> ceRNA2(m) gR
+	0 -> ceRNA3(m) gR
+	0 -> ceRNA4(m) gR
+	0 -> ceRNA5(m) gR
+	0 -> ceRNA6(m) gR
+	0 -> ceRNA7(m) gR
+	0 -> ceRNA8(m) gR
+	0 -> ceRNA9(m) gR
+	0 -> ceRNA10(m) gR
+	0 -> ceRNA11(m) gR
+	0 -> ceRNA12(m) gR
+	0 -> ceRNA13(m) gR
+	0 -> ceRNA14(m) gR
+	0 -> ceRNA15(m) gR
+	0 -> ceRNA16(m) gR
+	0 -> ceRNA17(m) gR
+	0 -> ceRNA18(m) gR
+	0 -> ceRNA19(m) gR
+	0 -> ceRNA20(m) gR
+	0 -> ceRNA21(m) gR
+	0 -> ceRNA22(m) gR
+	0 -> ceRNA23(m) gR
+	0 -> ceRNA24(m) gR
+	0 -> ceRNA25(m) gR
+	0 -> ceRNA26(m) gR
+	0 -> ceRNA27(m) gR
+	0 -> ceRNA28(m) gR
+	0 -> ceRNA29(m) gR
+	0 -> ceRNA30(m) gR
+	0 -> ceRNA31(m) gR
+	0 -> ceRNA32(m) gR
+	0 -> ceRNA33(m) gR
+	0 -> ceRNA34(m) gR
+	0 -> ceRNA35(m) gR
+	0 -> ceRNA36(m) gR
+	0 -> ceRNA37(m) gR
+	0 -> ceRNA38(m) gR
+	0 -> ceRNA39(m) gR
+	0 -> ceRNA40(m) gR
+	0 -> ceRNA41(m) gR
+	0 -> ceRNA42(m) gR
+	0 -> ceRNA43(m) gR
+	0 -> ceRNA44(m) gR
+	0 -> ceRNA45(m) gR
+	0 -> ceRNA46(m) gR
+	0 -> ceRNA47(m) gR
+	0 -> ceRNA48(m) gR
+	0 -> ceRNA49(m) gR
+	0 -> ceRNA50(m) gR
+	0 -> ceRNA51(m) gR
+	0 -> ceRNA52(m) gR
+	0 -> ceRNA53(m) gR
+	0 -> ceRNA54(m) gR
+	0 -> ceRNA55(m) gR
+	0 -> ceRNA56(m) gR
+	0 -> ceRNA57(m) gR
+	0 -> ceRNA58(m) gR
+	0 -> ceRNA59(m) gR
+	0 -> ceRNA60(m) gR
+	0 -> ceRNA61(m) gR
+	0 -> ceRNA62(m) gR
+	0 -> ceRNA63(m) gR
+	0 -> ceRNA64(m) gR
+	0 -> ceRNA65(m) gR
+	0 -> ceRNA66(m) gR
+	0 -> ceRNA67(m) gR
+	0 -> ceRNA68(m) gR
+	0 -> ceRNA69(m) gR
+	0 -> ceRNA70(m) gR
+	0 -> ceRNA71(m) gR
+	0 -> ceRNA72(m) gR
+	0 -> ceRNA73(m) gR
+	0 -> ceRNA74(m) gR
+	0 -> ceRNA75(m) gR
+	0 -> ceRNA76(m) gR
+	0 -> ceRNA77(m) gR
+	0 -> ceRNA78(m) gR
+	0 -> ceRNA79(m) gR
+	0 -> ceRNA80(m) gR
+	0 -> ceRNA81(m) gR
+	0 -> ceRNA82(m) gR
+	0 -> ceRNA83(m) gR
+	0 -> ceRNA84(m) gR
+	0 -> ceRNA85(m) gR
+	0 -> ceRNA86(m) gR
+	0 -> ceRNA87(m) gR
+	0 -> ceRNA88(m) gR
+	0 -> ceRNA89(m) gR
+	0 -> ceRNA90(m) gR
+	0 -> ceRNA91(m) gR
+	0 -> ceRNA92(m) gR
+	0 -> ceRNA93(m) gR
+	0 -> ceRNA94(m) gR
+	0 -> ceRNA95(m) gR
+	0 -> ceRNA96(m) gR
+	0 -> ceRNA97(m) gR
+	0 -> ceRNA98(m) gR
+	0 -> ceRNA99(m) gR
+	0 -> ceRNA100(m) gR
+
+	### complex formation
+	miRNA1(c) + ceRNA1(m) <-> miRNA1(c!1).ceRNA1(m!1) kf, kb
+	miRNA1(c) + ceRNA2(m) <-> miRNA1(c!1).ceRNA2(m!1) kf, kb
+	miRNA1(c) + ceRNA3(m) <-> miRNA1(c!1).ceRNA3(m!1) kf, kb
+	miRNA1(c) + ceRNA4(m) <-> miRNA1(c!1).ceRNA4(m!1) kf, kb
+	miRNA1(c) + ceRNA5(m) <-> miRNA1(c!1).ceRNA5(m!1) kf, kb
+	miRNA1(c) + ceRNA6(m) <-> miRNA1(c!1).ceRNA6(m!1) kf, kb
+	miRNA1(c) + ceRNA7(m) <-> miRNA1(c!1).ceRNA7(m!1) kf, kb
+	miRNA1(c) + ceRNA8(m) <-> miRNA1(c!1).ceRNA8(m!1) kf, kb
+	miRNA1(c) + ceRNA9(m) <-> miRNA1(c!1).ceRNA9(m!1) kf, kb
+	miRNA1(c) + ceRNA10(m) <-> miRNA1(c!1).ceRNA10(m!1) kf, kb
+	miRNA1(c) + ceRNA11(m) <-> miRNA1(c!1).ceRNA11(m!1) kf, kb
+	miRNA1(c) + ceRNA12(m) <-> miRNA1(c!1).ceRNA12(m!1) kf, kb
+	miRNA1(c) + ceRNA13(m) <-> miRNA1(c!1).ceRNA13(m!1) kf, kb
+	miRNA1(c) + ceRNA14(m) <-> miRNA1(c!1).ceRNA14(m!1) kf, kb
+	miRNA1(c) + ceRNA15(m) <-> miRNA1(c!1).ceRNA15(m!1) kf, kb
+	miRNA1(c) + ceRNA16(m) <-> miRNA1(c!1).ceRNA16(m!1) kf, kb
+	miRNA1(c) + ceRNA17(m) <-> miRNA1(c!1).ceRNA17(m!1) kf, kb
+	miRNA1(c) + ceRNA18(m) <-> miRNA1(c!1).ceRNA18(m!1) kf, kb
+	miRNA1(c) + ceRNA19(m) <-> miRNA1(c!1).ceRNA19(m!1) kf, kb
+	miRNA1(c) + ceRNA20(m) <-> miRNA1(c!1).ceRNA20(m!1) kf, kb
+	miRNA1(c) + ceRNA21(m) <-> miRNA1(c!1).ceRNA21(m!1) kf, kb
+	miRNA1(c) + ceRNA22(m) <-> miRNA1(c!1).ceRNA22(m!1) kf, kb
+	miRNA1(c) + ceRNA23(m) <-> miRNA1(c!1).ceRNA23(m!1) kf, kb
+	miRNA1(c) + ceRNA24(m) <-> miRNA1(c!1).ceRNA24(m!1) kf, kb
+	miRNA1(c) + ceRNA25(m) <-> miRNA1(c!1).ceRNA25(m!1) kf, kb
+	miRNA1(c) + ceRNA26(m) <-> miRNA1(c!1).ceRNA26(m!1) kf, kb
+	miRNA1(c) + ceRNA27(m) <-> miRNA1(c!1).ceRNA27(m!1) kf, kb
+	miRNA1(c) + ceRNA28(m) <-> miRNA1(c!1).ceRNA28(m!1) kf, kb
+	miRNA1(c) + ceRNA29(m) <-> miRNA1(c!1).ceRNA29(m!1) kf, kb
+	miRNA1(c) + ceRNA30(m) <-> miRNA1(c!1).ceRNA30(m!1) kf, kb
+	miRNA1(c) + ceRNA31(m) <-> miRNA1(c!1).ceRNA31(m!1) kf, kb
+	miRNA1(c) + ceRNA32(m) <-> miRNA1(c!1).ceRNA32(m!1) kf, kb
+	miRNA1(c) + ceRNA33(m) <-> miRNA1(c!1).ceRNA33(m!1) kf, kb
+	miRNA1(c) + ceRNA34(m) <-> miRNA1(c!1).ceRNA34(m!1) kf, kb
+	miRNA1(c) + ceRNA35(m) <-> miRNA1(c!1).ceRNA35(m!1) kf, kb
+	miRNA1(c) + ceRNA36(m) <-> miRNA1(c!1).ceRNA36(m!1) kf, kb
+	miRNA1(c) + ceRNA37(m) <-> miRNA1(c!1).ceRNA37(m!1) kf, kb
+	miRNA1(c) + ceRNA38(m) <-> miRNA1(c!1).ceRNA38(m!1) kf, kb
+	miRNA1(c) + ceRNA39(m) <-> miRNA1(c!1).ceRNA39(m!1) kf, kb
+	miRNA1(c) + ceRNA40(m) <-> miRNA1(c!1).ceRNA40(m!1) kf, kb
+	miRNA1(c) + ceRNA41(m) <-> miRNA1(c!1).ceRNA41(m!1) kf, kb
+	miRNA1(c) + ceRNA42(m) <-> miRNA1(c!1).ceRNA42(m!1) kf, kb
+	miRNA1(c) + ceRNA43(m) <-> miRNA1(c!1).ceRNA43(m!1) kf, kb
+	miRNA1(c) + ceRNA44(m) <-> miRNA1(c!1).ceRNA44(m!1) kf, kb
+	miRNA1(c) + ceRNA45(m) <-> miRNA1(c!1).ceRNA45(m!1) kf, kb
+	miRNA1(c) + ceRNA46(m) <-> miRNA1(c!1).ceRNA46(m!1) kf, kb
+	miRNA1(c) + ceRNA47(m) <-> miRNA1(c!1).ceRNA47(m!1) kf, kb
+	miRNA1(c) + ceRNA48(m) <-> miRNA1(c!1).ceRNA48(m!1) kf, kb
+	miRNA1(c) + ceRNA49(m) <-> miRNA1(c!1).ceRNA49(m!1) kf, kb
+	miRNA1(c) + ceRNA50(m) <-> miRNA1(c!1).ceRNA50(m!1) kf, kb
+	miRNA1(c) + ceRNA51(m) <-> miRNA1(c!1).ceRNA51(m!1) kf, kb
+	miRNA1(c) + ceRNA52(m) <-> miRNA1(c!1).ceRNA52(m!1) kf, kb
+	miRNA1(c) + ceRNA53(m) <-> miRNA1(c!1).ceRNA53(m!1) kf, kb
+	miRNA1(c) + ceRNA54(m) <-> miRNA1(c!1).ceRNA54(m!1) kf, kb
+	miRNA1(c) + ceRNA55(m) <-> miRNA1(c!1).ceRNA55(m!1) kf, kb
+	miRNA1(c) + ceRNA56(m) <-> miRNA1(c!1).ceRNA56(m!1) kf, kb
+	miRNA1(c) + ceRNA57(m) <-> miRNA1(c!1).ceRNA57(m!1) kf, kb
+	miRNA1(c) + ceRNA58(m) <-> miRNA1(c!1).ceRNA58(m!1) kf, kb
+	miRNA1(c) + ceRNA59(m) <-> miRNA1(c!1).ceRNA59(m!1) kf, kb
+	miRNA1(c) + ceRNA60(m) <-> miRNA1(c!1).ceRNA60(m!1) kf, kb
+	miRNA1(c) + ceRNA61(m) <-> miRNA1(c!1).ceRNA61(m!1) kf, kb
+	miRNA1(c) + ceRNA62(m) <-> miRNA1(c!1).ceRNA62(m!1) kf, kb
+	miRNA1(c) + ceRNA63(m) <-> miRNA1(c!1).ceRNA63(m!1) kf, kb
+	miRNA1(c) + ceRNA64(m) <-> miRNA1(c!1).ceRNA64(m!1) kf, kb
+	miRNA1(c) + ceRNA65(m) <-> miRNA1(c!1).ceRNA65(m!1) kf, kb
+	miRNA1(c) + ceRNA66(m) <-> miRNA1(c!1).ceRNA66(m!1) kf, kb
+	miRNA1(c) + ceRNA67(m) <-> miRNA1(c!1).ceRNA67(m!1) kf, kb
+	miRNA1(c) + ceRNA68(m) <-> miRNA1(c!1).ceRNA68(m!1) kf, kb
+	miRNA1(c) + ceRNA69(m) <-> miRNA1(c!1).ceRNA69(m!1) kf, kb
+	miRNA1(c) + ceRNA70(m) <-> miRNA1(c!1).ceRNA70(m!1) kf, kb
+	miRNA1(c) + ceRNA71(m) <-> miRNA1(c!1).ceRNA71(m!1) kf, kb
+	miRNA1(c) + ceRNA72(m) <-> miRNA1(c!1).ceRNA72(m!1) kf, kb
+	miRNA1(c) + ceRNA73(m) <-> miRNA1(c!1).ceRNA73(m!1) kf, kb
+	miRNA1(c) + ceRNA74(m) <-> miRNA1(c!1).ceRNA74(m!1) kf, kb
+	miRNA1(c) + ceRNA75(m) <-> miRNA1(c!1).ceRNA75(m!1) kf, kb
+	miRNA1(c) + ceRNA76(m) <-> miRNA1(c!1).ceRNA76(m!1) kf, kb
+	miRNA1(c) + ceRNA77(m) <-> miRNA1(c!1).ceRNA77(m!1) kf, kb
+	miRNA1(c) + ceRNA78(m) <-> miRNA1(c!1).ceRNA78(m!1) kf, kb
+	miRNA1(c) + ceRNA79(m) <-> miRNA1(c!1).ceRNA79(m!1) kf, kb
+	miRNA1(c) + ceRNA80(m) <-> miRNA1(c!1).ceRNA80(m!1) kf, kb
+	miRNA1(c) + ceRNA81(m) <-> miRNA1(c!1).ceRNA81(m!1) kf, kb
+	miRNA1(c) + ceRNA82(m) <-> miRNA1(c!1).ceRNA82(m!1) kf, kb
+	miRNA1(c) + ceRNA83(m) <-> miRNA1(c!1).ceRNA83(m!1) kf, kb
+	miRNA1(c) + ceRNA84(m) <-> miRNA1(c!1).ceRNA84(m!1) kf, kb
+	miRNA1(c) + ceRNA85(m) <-> miRNA1(c!1).ceRNA85(m!1) kf, kb
+	miRNA1(c) + ceRNA86(m) <-> miRNA1(c!1).ceRNA86(m!1) kf, kb
+	miRNA1(c) + ceRNA87(m) <-> miRNA1(c!1).ceRNA87(m!1) kf, kb
+	miRNA1(c) + ceRNA88(m) <-> miRNA1(c!1).ceRNA88(m!1) kf, kb
+	miRNA1(c) + ceRNA89(m) <-> miRNA1(c!1).ceRNA89(m!1) kf, kb
+	miRNA1(c) + ceRNA90(m) <-> miRNA1(c!1).ceRNA90(m!1) kf, kb
+	miRNA1(c) + ceRNA91(m) <-> miRNA1(c!1).ceRNA91(m!1) kf, kb
+	miRNA1(c) + ceRNA92(m) <-> miRNA1(c!1).ceRNA92(m!1) kf, kb
+	miRNA1(c) + ceRNA93(m) <-> miRNA1(c!1).ceRNA93(m!1) kf, kb
+	miRNA1(c) + ceRNA94(m) <-> miRNA1(c!1).ceRNA94(m!1) kf, kb
+	miRNA1(c) + ceRNA95(m) <-> miRNA1(c!1).ceRNA95(m!1) kf, kb
+	miRNA1(c) + ceRNA96(m) <-> miRNA1(c!1).ceRNA96(m!1) kf, kb
+	miRNA1(c) + ceRNA97(m) <-> miRNA1(c!1).ceRNA97(m!1) kf, kb
+	miRNA1(c) + ceRNA98(m) <-> miRNA1(c!1).ceRNA98(m!1) kf, kb
+	miRNA1(c) + ceRNA99(m) <-> miRNA1(c!1).ceRNA99(m!1) kf, kb
+	miRNA1(c) + ceRNA100(m) <-> miRNA1(c!1).ceRNA100(m!1) kf, kb
+
+	### full complex degradation
+	miRNA1(c!1).ceRNA1(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA2(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA3(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA4(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA5(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA6(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA7(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA8(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA9(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA10(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA11(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA12(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA13(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA14(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA15(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA16(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA17(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA18(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA19(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA20(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA21(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA22(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA23(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA24(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA25(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA26(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA27(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA28(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA29(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA30(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA31(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA32(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA33(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA34(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA35(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA36(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA37(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA38(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA39(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA40(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA41(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA42(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA43(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA44(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA45(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA46(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA47(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA48(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA49(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA50(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA51(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA52(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA53(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA54(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA55(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA56(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA57(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA58(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA59(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA60(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA61(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA62(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA63(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA64(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA65(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA66(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA67(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA68(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA69(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA70(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA71(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA72(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA73(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA74(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA75(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA76(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA77(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA78(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA79(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA80(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA81(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA82(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA83(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA84(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA85(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA86(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA87(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA88(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA89(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA90(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA91(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA92(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA93(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA94(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA95(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA96(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA97(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA98(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA99(m!1) -> 0 a*g DeleteMolecules
+	miRNA1(c!1).ceRNA100(m!1) -> 0 a*g DeleteMolecules
+
+	### partial complex degradation
+	miRNA1(c!1).ceRNA1(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA2(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA3(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA4(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA5(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA6(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA7(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA8(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA9(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA10(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA11(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA12(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA13(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA14(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA15(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA16(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA17(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA18(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA19(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA20(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA21(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA22(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA23(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA24(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA25(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA26(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA27(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA28(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA29(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA30(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA31(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA32(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA33(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA34(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA35(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA36(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA37(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA38(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA39(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA40(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA41(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA42(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA43(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA44(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA45(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA46(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA47(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA48(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA49(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA50(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA51(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA52(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA53(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA54(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA55(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA56(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA57(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA58(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA59(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA60(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA61(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA62(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA63(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA64(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA65(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA66(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA67(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA68(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA69(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA70(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA71(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA72(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA73(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA74(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA75(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA76(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA77(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA78(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA79(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA80(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA81(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA82(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA83(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA84(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA85(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA86(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA87(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA88(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA89(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA90(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA91(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA92(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA93(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA94(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA95(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA96(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA97(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA98(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA99(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+	miRNA1(c!1).ceRNA100(m!1) -> miRNA1(c) (1-a)*g DeleteMolecules
+end reaction rules
+
+end model
+
+### Actions ###
+# construct reaction network
+generate_network({overwrite=>1})
+
+saveConcentrations()
+
+setParameter("kS",2.0)
+
+simulate({method=>"ode",suffix=>"pre",steady_state=>1,print_CDAT=>0,t_end=>8000000,n_steps=>800000})
+quit()
+
+resetConcentrations()
+setParameter("kRc",0.2)
+simulate({method=>"ode",suffix=>"fold2",print_CDAT=>0,t_end=>80000,n_steps=>8000})
+
+resetConcentrations()
+
+setParameter("kRc",0.5)
+simulate({method=>"ode",suffix=>"fold5",print_CDAT=>0,t_end=>80000,n_steps=>8000})
+
+resetConcentrations()
+
+setParameter("kRc",0.7)
+simulate({method=>"ode",suffix=>"fold7",print_CDAT=>0,t_end=>80000,n_steps=>8000})
+
+# simulation
+# pre stimulus interval 
+#simulate_ode({suffix=>"sim",t_end=>1800,n_steps=>1800})

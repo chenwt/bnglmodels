@@ -1,0 +1,177 @@
+####################################################################################
+# Generic 10x1 fully connected ceRNA network.
+# Intended for random sampling of the parameter space of such systems.
+# 
+# 
+###################################################################################
+
+
+begin model
+
+begin parameters
+	# miRNA transcription rates
+	kS			0.15
+	
+	# ceRNA transcription rates
+	kR1			0.15
+	kR2			0.15
+	
+	# ceRNA degradation rates
+	gR			0.0004
+	
+	# miRNA degradation rates
+	gS			0.0002
+	
+	# association/dissociation rates
+	kf			0.0012
+	kb			0.00001
+	
+	# Other parameters
+	a			0.5			# miRNA catalyticity level
+	g			kb			# base complex degradation rate
+	gCf			g*a			# full complex degradation rate
+	gCp			(1-a)*g		# partial complex degradation
+	
+end parameters
+
+begin molecule types
+	# miRNAs
+	miRNA1(c)
+	
+	# ceRNAs
+	ceRNA1(m)
+	ceRNA2(m)
+	ceRNA3(m)
+	ceRNA4(m)
+	ceRNA5(m)
+	ceRNA6(m)
+	ceRNA7(m)
+	ceRNA8(m)
+	ceRNA9(m)
+	ceRNA10(m)
+end molecule types
+
+begin seed species
+	# miRNAs
+	miRNA1(c)	0
+	
+	# ceRNAs
+	ceRNA1(m)	0
+	ceRNA2(m)	0
+	ceRNA3(m)	0
+	ceRNA4(m)	0
+	ceRNA5(m)	0
+	ceRNA6(m)	0
+	ceRNA7(m)	0
+	ceRNA8(m)	0
+	ceRNA9(m)	0
+	ceRNA10(m)	0
+end seed species
+
+begin observables 
+	# miRNAs
+	Molecules miRNA1_free	miRNA1(c)
+	
+	# ceRNAs
+	Molecules ceRNA1_free	ceRNA1(m)
+	Molecules ceRNA2_free	ceRNA2(m)
+	Molecules ceRNA3_free	ceRNA3(m)
+	Molecules ceRNA4_free	ceRNA4(m)
+	Molecules ceRNA5_free	ceRNA5(m)
+	Molecules ceRNA6_free	ceRNA6(m)
+	Molecules ceRNA7_free	ceRNA7(m)
+	Molecules ceRNA8_free	ceRNA8(m)
+	Molecules ceRNA9_free	ceRNA9(m)
+	Molecules ceRNA10_free	ceRNA10(m)
+	
+	# complexes
+	Molecules Complex1		miRNA1(c!1).ceRNA1(m!1)
+	#Molecules Complex2 		miRNA(c!1).ceRNA2(m!1)
+end observables
+
+begin reaction rules
+	#### Transcription rules ####
+	# miRNA transcription
+	0 -> miRNA1(c) kS
+	
+	# ceRNA transcription
+	0 -> ceRNA1(m) kR1
+	0 -> ceRNA2(m) kR1
+	0 -> ceRNA3(m) kR1
+	0 -> ceRNA4(m) kR1
+	0 -> ceRNA5(m) kR1
+	0 -> ceRNA6(m) kR1
+	0 -> ceRNA7(m) kR1
+	0 -> ceRNA8(m) kR1
+	0 -> ceRNA9(m) kR1
+	0 -> ceRNA10(m) kR2
+	
+	#### Degradation rules ####
+	# miRNA degradation
+	miRNA1(c) -> 0 gS
+	
+	# ceRNA degradation
+	ceRNA1(m) -> 0 gR
+	ceRNA2(m) -> 0 gR
+	ceRNA3(m) -> 0 gR
+	ceRNA4(m) -> 0 gR
+	ceRNA5(m) -> 0 gR
+	ceRNA6(m) -> 0 gR
+	ceRNA7(m) -> 0 gR
+	ceRNA8(m) -> 0 gR
+	ceRNA9(m) -> 0 gR
+	ceRNA10(m) -> 0 gR
+	
+	#### Complex formation rules ####
+	# miRNA1 binding rules
+	miRNA1(c) + ceRNA1(m) <-> miRNA1(c!1).ceRNA1(m!1) kf, kb
+	miRNA1(c) + ceRNA2(m) <-> miRNA1(c!1).ceRNA2(m!1) kf, kb
+	miRNA1(c) + ceRNA3(m) <-> miRNA1(c!1).ceRNA3(m!1) kf, kb
+	miRNA1(c) + ceRNA4(m) <-> miRNA1(c!1).ceRNA4(m!1) kf, kb
+	miRNA1(c) + ceRNA5(m) <-> miRNA1(c!1).ceRNA5(m!1) kf, kb
+	miRNA1(c) + ceRNA6(m) <-> miRNA1(c!1).ceRNA6(m!1) kf, kb
+	miRNA1(c) + ceRNA7(m) <-> miRNA1(c!1).ceRNA7(m!1) kf, kb
+	miRNA1(c) + ceRNA8(m) <-> miRNA1(c!1).ceRNA8(m!1) kf, kb
+	miRNA1(c) + ceRNA9(m) <-> miRNA1(c!1).ceRNA9(m!1) kf, kb
+	miRNA1(c) + ceRNA10(m) <-> miRNA1(c!1).ceRNA10(m!1) kf, kb
+	
+	# miRNA1 complexes, full degradation
+	miRNA1(c!1).ceRNA1(m!1) -> 0 gCf DeleteMolecules
+	miRNA1(c!1).ceRNA2(m!1) -> 0 gCf DeleteMolecules
+	miRNA1(c!1).ceRNA3(m!1) -> 0 gCf DeleteMolecules
+	miRNA1(c!1).ceRNA4(m!1) -> 0 gCf DeleteMolecules
+	miRNA1(c!1).ceRNA5(m!1) -> 0 gCf DeleteMolecules
+	miRNA1(c!1).ceRNA6(m!1) -> 0 gCf DeleteMolecules
+	miRNA1(c!1).ceRNA7(m!1) -> 0 gCf DeleteMolecules
+	miRNA1(c!1).ceRNA8(m!1) -> 0 gCf DeleteMolecules
+	miRNA1(c!1).ceRNA9(m!1) -> 0 gCf DeleteMolecules
+	miRNA1(c!1).ceRNA10(m!1) -> 0 gCf DeleteMolecules
+	
+	# miRNA1 complexes, partial degradation
+	miRNA1(c!1).ceRNA1(m!1) -> miRNA1(c) gCp DeleteMolecules
+	miRNA1(c!1).ceRNA2(m!1) -> miRNA1(c) gCp DeleteMolecules
+	miRNA1(c!1).ceRNA3(m!1) -> miRNA1(c) gCp DeleteMolecules
+	miRNA1(c!1).ceRNA4(m!1) -> miRNA1(c) gCp DeleteMolecules
+	miRNA1(c!1).ceRNA5(m!1) -> miRNA1(c) gCp DeleteMolecules
+	miRNA1(c!1).ceRNA6(m!1) -> miRNA1(c) gCp DeleteMolecules
+	miRNA1(c!1).ceRNA7(m!1) -> miRNA1(c) gCp DeleteMolecules
+	miRNA1(c!1).ceRNA8(m!1) -> miRNA1(c) gCp DeleteMolecules
+	miRNA1(c!1).ceRNA9(m!1) -> miRNA1(c) gCp DeleteMolecules
+	miRNA1(c!1).ceRNA10(m!1) -> miRNA1(c) gCp DeleteMolecules
+	
+	
+end reaction rules
+
+end model
+
+### Actions ###
+# construct reaction network
+generate_network({overwrite=>1})
+
+# Equilibration..
+simulate({method=>"ode",suffix=>"ode",t_end=>20000,n_steps=>20000})
+#simulate({method=>"ssa",suffix=>"ssa",t_end=>200000,n_steps=>20000})
+
+# simulation
+# pre stimulus interval 
+#simulate_ode({suffix=>"sim",t_end=>1800,n_steps=>1800})
