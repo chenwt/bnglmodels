@@ -1,0 +1,5 @@
+# RuleBender related
+.metadata/
+.our_rcp_workspace
+*/results/
+*.xml
