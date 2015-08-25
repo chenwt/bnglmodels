@@ -1,0 +1,675 @@
+#####################################################################################
+# Full synaptic network model (based on CerNet6, the final implementation of A&DS). #
+# Dec. 10, 2013.																	#
+#																					#
+#####################################################################################
+
+###### Change Log ######
+
+### Version 0 is the core model from CerNet6, with no changes.
+#
+###
+
+### Version 1 adds the positive feedback from ERK to Raf from MapkFbCyt1.
+# Default params and rule numbers are the same. No changes.
+#
+###
+
+
+begin model
+begin parameters
+	f		1				# Volume scaling factor (also applies to the Ca influx and leak rates)
+	NA 		6.0221415e+23	# Avogadro's number (molecules/mol)
+	V  		f*2.0e-12		# Spine volume (L) (default is 8.0e-17 L, or 0.08 fL)
+	scale 	NA*V*1e-6		# scaling factor for concentrations and rate constants
+	
+	#### Binding of GRIP and AMPAR in the membrane
+	# The reactions have different units in the original and need different scaling here.
+	# 'scale2' is the membrane scaling factor.
+	scale2	f*NA*1.87e-19*1e-6
+
+	### Ca2+ influx rates for stimulation
+	# basal influx 
+	CaInflux 	0.0
+	
+	### Factor for dephos scaling
+	dephos		1.0 # ignore! and don't change!!!
+	fPhosph		1.0 # use this: fraction of default phosphatase level
+	
+	### Reaction rates
+	k1			25e3/scale
+	k2			2000
+	k3			500
+	k4			98.827/scale
+	k5			612.6
+	k6			98.827/scale
+	k7			612.6
+	k8			1000
+	k9			17147/scale
+	k10			8426.3
+	k11			17147/scale
+	k12			8426.3
+	k13			250
+	k14			1900*f
+	k15			107/scale
+	k16			0.95
+	k17			107/scale
+	k18			0.95
+	k19			472
+	k20			25
+	k21			472
+	k22			25
+	k23			5.5/scale
+	k24			2.6
+	k25			5.5/scale
+	k26			2.6
+	k27			43.5/scale
+	k28			35.8
+	k29			43.5/scale
+	k30			35.8
+	k31			13.3/scale
+	k32			12
+	k33			1/(scale^2)
+	k34			12
+	k35			11.3
+	k36			0.23
+	k37			1/scale
+	k38			10
+	k39			0.017
+	k40			0.0055
+	k41			1/scale
+	k42			10
+	k43			0.017
+	k44			0.0055
+	k45			1/(scale^2)
+	k46			12
+	k47			13.3/scale
+	k48			12
+	k49			1/(scale^2)
+	k50			12
+	k51			11.3
+	k52			0.23
+	k53			1/scale
+	k54			10
+	k55			13.3/scale
+	k56			12
+	k57			1/scale
+	k58			10
+	k59			5.8/scale
+	k60			3.608
+	k61			4.7
+	k62			5.8/scale
+	k63			3.608
+	k64			4.7
+	k65			5.8/scale
+	k66			3.608
+	k67			4.7
+	k68			5.8/scale
+	k69			3.608
+	k70			4.7
+	k71			1*dephos
+	k72			1/scale
+	k73			2
+	k74			1.5
+	k75			0.55/scale
+	k76			2
+	k77			0.5*dephos
+	k78			0.65/scale
+	k79			0.065
+	k80			1
+	k81			0.65/scale
+	k82			0.065
+	k83			1
+	k84			0.75/scale
+	k85			2
+	k86			0.5*dephos
+	k87			0.75/scale
+	k88			2
+	k89			0.5*dephos
+	k90			16.2/scale
+	k91			0.6
+	k92			0.15
+	k93			16.2/scale
+	k94			0.6
+	k95			0.3
+	k96			28/scale
+	k97			0.56
+	k98			0.14*dephos
+	k99			13/scale
+	k100		0.396
+	k101		0.099*dephos
+	k102		1.93/scale
+	k103		108
+	k104		10.8/scale
+	k105		108
+	k106		300
+	k107		15
+	k108		30
+	k109		15
+	k110		3
+	k111		15
+	k112		1.93/scale
+	k113		0.41
+	k114		10.8/scale
+	k115		2.5
+	k116		43
+	k117		600
+	k118		450
+	k119		4/scale
+	k120		1
+	k121		14
+	k122		4/scale
+	k123		1
+	k124		14
+	k125		4/scale
+	k126		1
+	k127		14
+	k128		1.4/scale
+	k129		1.5
+	k130		2.5*dephos
+	k131		1.4/scale
+	k132		1.5
+	k133		2.5
+	k134		1.4/scale
+	k135		1.5
+	k136		2.5
+	k137		1.4/scale
+	k138		1.5
+	k139		2.5*dephos
+	k140		1.4/scale
+	k141		1.5
+	k142		2.5
+	k143		1.4/scale
+	k144		1.5
+	k145		2.5
+	k146		50
+	k147		15
+	k148		43
+	k149		600
+	k150		3600
+	k151		50
+	k152		15
+	k153		43
+	k154		600
+	k155		3600
+	k156		300
+	k157		15
+	k158		43
+	k159		600
+	k160		3600
+	k161		1.93/scale
+	k162		108
+	k163		1.93/scale
+	k164		0.41
+	k165		10.8/scale
+	k166		108
+	k167		10.8/scale
+	k168		2.5
+	k169		0.4
+	k170		0.4/scale
+	k171		0.8
+	k172		0.3
+	## redundant rates removed
+	k182		0.6/scale
+	k183		0.17
+	k184		0.25*dephos
+	k185		1/scale2
+	k186		7
+	k187		1/scale2
+	k188		70
+	k189		0.1
+	k190		0.02
+	k191		0.1
+	k192		0.02
+	k193		0.6/scale
+	k194		0.17
+	k195		0.25
+	k196		0.02
+	k197		0.00025
+	k198		0.02
+	k199		0.00025
+	k200		0.6/scale
+	k201		0.17
+	k202		0.25
+	k203		0.003
+	k204		0.002
+	k205		0.6/scale
+	k206		0.17
+	k207		0.25
+	
+	### Scaffold rates from Kocieniewski et al., 2012
+	pcyt		1.20443/scale
+	pscaff		1.0
+	a			1.20443/scale
+	d1			0.1
+	d2			100
+	u			0.1
+	
+	###### rate constants for feedback connections ######
+	# ERK-Raf connection (Bhalla)
+	kfb_f1		2/scale
+	kfb_b1		40
+	kfb_c1		10
+	
+	############### Initial Concentrations ###############
+	Ca_init			0.045*scale
+	PMCA_init		0.2076*scale
+	NCX_init		0.0623*scale
+	SERCA_init		2.0757*scale
+	PV_init			40*scale
+	CB_init			40*scale
+	
+	PKC_init		1.0*scale
+	Raf_act_init	0.5*scale
+	Raf_init		0.1*scale
+	MEK_init		1.5*scale
+	ERK_init		1*scale
+	cPLA2_init		0.4*scale
+	
+	PP5_init		1*scale*fPhosph
+	PP2A_init		1.5*scale*fPhosph
+	MKP_init		0.26*scale*fPhosph
+	PP1_init		0.6228*scale*fPhosph
+	
+	AMPAR_syn_init		0.062292358804*scale
+	AMPAR_ext_init		0.332225913621*scale
+	GRIP_init			0.456810631229*scale
+	GRIP_AMPAR_init		2.47093023256*scale
+	AMPAR_dend_init		33.2225913621*scale
+	
+	KSR_init		0.083027*scale
+	
+end parameters
+
+begin molecule types
+	# Ca and Ca regulation
+	Ca(r)
+	PMCA(c)
+	NCX(c1,c2)
+	SERCA(c1,c2)
+	PV(c1,c2)
+	CB(c1,c2,c3,c4)
+	
+	# Kinases
+	Raf(STYKc~U~P)
+	Raf_act(cat~U~P)
+	MEK(S218~U~P,S222~U~P,S_TKc)
+	ERK(T185~U~P,Y187~U~P,S_TKc)
+	PKC(C1,C2~c0~c1~c2~c3,S_TKc~B~F)
+	
+	# Phosphatases
+	MKP(DSPc)
+	PP2A(PP2Ac)
+	PP1(PP2Ac)
+	PP5(PP2Ac)
+	
+	# others
+	cPLA2(C2~c0~c1~c2,plb~cyt~memb,S505~U~P,PLAc~B~F)
+	AMPAR(loc~syn~ext~dend~cyt,S880~U~P,ctd)
+	GRIP(PDZ)
+	
+	Mg(r)
+	AA(r)
+	APC(r)
+	
+	Trash()
+	
+end molecule types
+	
+begin seed species
+	Ca(r)								Ca_init
+	PMCA(c)								PMCA_init
+	NCX(c1,c2)							NCX_init
+	SERCA(c1,c2)						SERCA_init
+	PV(c1,c2)							PV_init
+	CB(c1,c2,c3,c4)						CB_init
+	
+	Raf(STYKc~U)						Raf_init
+	Raf_act(cat~U)						Raf_act_init
+	MEK(S218~U,S222~U,S_TKc)			MEK_init
+	ERK(T185~U,Y187~U,S_TKc)			ERK_init
+	PKC(C1,C2~c0,S_TKc~B)				PKC_init
+	
+	MKP(DSPc)							MKP_init
+	PP2A(PP2Ac)							PP2A_init
+	PP1(PP2Ac)							PP1_init
+	PP5(PP2Ac)							PP5_init
+	
+	cPLA2(C2~c0,plb~cyt,S505~U,PLAc~B)	cPLA2_init
+	
+	
+	AMPAR(loc~syn,S880~U,ctd)				AMPAR_syn_init
+	AMPAR(loc~ext,S880~U,ctd)				AMPAR_ext_init
+	GRIP(PDZ)								GRIP_init
+	AMPAR(loc~syn,S880~U,ctd!1).GRIP(PDZ!1)		GRIP_AMPAR_init
+	AMPAR(loc~dend,S880~U,ctd)				AMPAR_dend_init
+	
+	$Trash()	0
+end seed species
+
+begin observables
+	# Ca and AA
+	Molecules 	Ca_free				Ca(r)
+	#Molecules	Ca_tot				Ca
+	Molecules	AA_free				AA(r)
+	
+	# PKC and cPLA2
+	Molecules 	PKC_active			PKC(S_TKc~F)
+	Molecules 	PKC_active2			PKC(S_TKc~F!?)
+	#Molecules	cPLA2_star			cPLA2(plb~memb,S505~U,PLAc~F)
+	#Molecules	cPLA2_star2			cPLA2(plb~memb,S505~P,PLAc~F)
+	Molecules	cPLA2_tot_active	cPLA2(plb~memb,PLAc~F)
+	Molecules	cPLA2_tot_active2	cPLA2(plb~memb,PLAc~F!?)
+	
+	# MAPK components
+	Molecules	Raf_act_active		Raf_act(cat~P)
+	Molecules	Raf_active			Raf(STYKc~P)
+	Molecules	MEK_active			MEK(S218~P,S222~P,S_TKc)
+	Molecules 	ERK_active			ERK(T185~P,Y187~P,S_TKc)
+	Molecules 	ERK_active2			ERK(T185~P!?,Y187~P!?,S_TKc!?)
+	
+	# AMPARs
+	Molecules	AMPARp_tot			AMPAR(S880~P)
+	Molecules	AMPARp_tot2			AMPAR(S880~P!?)
+	
+	#Molecules	AMPAR_GRIP			AMPAR(loc~syn,S880~U,ctd!1).GRIP(PDZ!1)
+	#Molecules	AMPARp_GRIP			AMPAR(loc~syn,S880~P,ctd!1).GRIP(PDZ!1)
+	#Molecules	AMPAR_GRIP_tot		AMPAR(loc~syn,S880~?,ctd!1).GRIP(PDZ!1)
+	
+	Molecules	AMPAR_syn_tot		AMPAR(loc~syn,S880~?)
+	#Molecules	AMPAR_syn_tot2		AMPAR(loc~syn)
+	#Molecules	AMPAR_PKC			AMPAR(loc~syn,S880~U!1).PKC(S_TKc~F!1)
+	#Molecules	AMPAR_ext_tot		AMPAR(loc~ext,S880~?)
+	#Molecules	AMPAR_dend_tot		AMPAR(loc~dend,S880~?)
+	#Molecules	AMPAR_cyt_tot		AMPAR(loc~cyt,S880~?)
+	
+	#Molecules	AMPAR_syn			AMPAR(loc~syn,S880~U) AMPAR(loc~syn,S880~U!1).GRIP(PDZ!1)
+	#Molecules	AMPAR_synP			AMPAR(loc~syn,S880~P) AMPAR(loc~syn,S880~P!1).GRIP(PDZ!1)
+	
+end observables
+
+begin functions
+	# time function 
+	#t() time()/0.05
+	
+	#c() FW100M/(2*sqrt(2*log10(100)))
+	
+	#ica() 10*(max_molar*exp(-(((t()-cntr)^2)/(2*c()^2))))
+	
+	#t2() ((t*1.0e3)-ctr)/par2
+	
+	#ica2() (par1/par2)*exp(-t2()*t2())
+end functions
+
+begin reaction rules
+	##### Ca Stimulus input #####
+	# Ca influx for stimulation
+	stim: 0 -> Ca(r) f*CaInflux
+	
+	
+	######## Calcium regulation ########
+	####################################
+	
+	### Pumps and exchangers
+	r1_2: 		PMCA(c) + Ca(r) <-> PMCA(c!1).Ca(r!1) k1, k2
+	r3: 		PMCA(c!1).Ca(r!1) -> PMCA(c) k3 DeleteMolecules
+	
+	r4_5: 		NCX(c1,c2) + Ca(r) <-> NCX(c1!1,c2).Ca(r!1) k4, k5
+	r6_7: 		NCX(c1!1,c2).Ca(r!1) + Ca(r) <-> NCX(c1!1,c2!2).Ca(r!1).Ca(r!2) k6, k7
+	r8: 		NCX(c1!1,c2!2).Ca(r!1).Ca(r!2) -> NCX(c1,c2) k8 DeleteMolecules 	# 5
+	
+	r9_10: 		SERCA(c1,c2) + Ca(r) <-> SERCA(c1!1,c2).Ca(r!1) k9, k10
+	r11_12: 	SERCA(c1!1,c2).Ca(r!1) + Ca(r) <-> SERCA(c1!1,c2!2).Ca(r!1).Ca(r!2) k11, k12
+	k13: 		SERCA(c1!1,c2!2).Ca(r!1).Ca(r!2) -> SERCA(c1,c2) k13 DeleteMolecules
+	
+	# leak channel
+	r14: 		0 -> Ca(r) k14
+	
+	### Ca Buffers
+	# PV binds 2 Ca
+	r15_16: 	PV(c1,c2) + Ca(r) <-> PV(c1!1,c2).Ca(r!1) k15, k16 # 10
+	r17_18: 	PV(c1!1,c2).Ca(r!1) + Ca(r) <-> PV(c1!1,c2!2).Ca(r!1).Ca(r!2) k17, k18
+	
+	# PV binds 2 Mg (implicitly modelled)
+	r19_20: 	PV(c1,c2) <-> PV(c1!1,c2).Mg(r!1) k19, k20 DeleteMolecules
+	r21_22: 	PV(c1!1,c2).Mg(r!1) <-> PV(c1!1,c2!2).Mg(r!1).Mg(r!2) k21, k22 DeleteMolecules
+	
+	# CB binds 4 Ca (changed to make binding of high and low affinity sites independent, as in the original
+	r23_24: 	CB(c1,c2) + Ca(r) <-> CB(c1!1,c2).Ca(r!1) k23, k24
+	r25_26: 	CB(c1!1,c2).Ca(r!1) + Ca(r) <-> CB(c1!1,c2!2).Ca(r!1).Ca(r!2) k25, k26 #15
+	
+	r27_28: 	CB(c3,c4) + Ca(r) <-> CB(c3!3,c4).Ca(r!3) k27, k28
+	r29_30: 	CB(c3!3,c4).Ca(r!3) + Ca(r) <-> CB(c3!3,c4!4).Ca(r!3).Ca(r!4) k29, k30
+	
+	########### PKC activation ###########
+	######################################
+	
+	# PKC binds 3 Ca
+	r31_32: 	PKC(C1,C2~c0,S_TKc~B) + Ca(r) <-> PKC(C1,C2~c1,S_TKc~B) k31, k32 DeleteMolecules
+	r33_34: 	PKC(C1,C2~c1,S_TKc~B) + Ca(r) + Ca(r) <-> PKC(C1,C2~c3,S_TKc~B) 2*k33, k34 DeleteMolecules
+	
+	# PKC activation, Ca3-stimulated ("PKCstar")
+	r35_36: 	PKC(C1,C2~c3,S_TKc~B) <-> PKC(C1,C2~c3,S_TKc~F) k35, k36 # 20
+	
+	# PKC binds AA
+	r37_38: 	PKC(C1,C2~c0,S_TKc~B) + AA(r) <-> PKC(C1!1,C2~c0,S_TKc~B).AA(r!1) k37, k38
+	
+	# PKC activation, AA-stim'd ("PKCstar2")
+	r39_40: 	PKC(C1!1,C2~c0,S_TKc~B).AA(r!1) <-> PKC(C1!1,C2~c0,S_TKc~F).AA(r!1) k39, k40
+	
+	# PKC(Ca) binds AA
+	r41_42: 	PKC(C1,C2~c1,S_TKc~B) + AA(r) <-> PKC(C1!1,C2~c1,S_TKc~B).AA(r!1) k41, k42
+	
+	# PKC act'n, AA and Ca1 stim'd ("PKCstar3")
+	r43_44: 	PKC(C1!1,C2~c1,S_TKc~B).AA(r!1) <-> PKC(C1!1,C2~c1,S_TKc~F).AA(r!1) k43, k44
+	
+	# PKC(AA)(Ca)* binds 2 Ca ("PKCstar4") (PKCstar3 <-> PKCstar4)
+	r45_46: 	PKC(C1!1,C2~c1,S_TKc~F).AA(r!1) + Ca(r) + Ca(r) <-> PKC(C1!1,C2~c3,S_TKc~F).AA(r!1) 2*k45, k46 # 25
+	
+	# PKC(AA) binds Ca
+	r47_48: 	PKC(C1!1,C2~c0,S_TKc~B).AA(r!1) + Ca(r) <-> PKC(C1!1,C2~c1,S_TKc~B).AA(r!1) k47, k48
+	
+	# PKC(AA)(Ca) binds 2 Ca
+	r49_50: 	PKC(C1!1,C2~c1,S_TKc~B).AA(r!1) + Ca(r) + Ca(r) <-> PKC(C1!1,C2~c3,S_TKc~B).AA(r!1) 2*k49, k50
+	
+	# PKC act'n, AA and Ca3 stim'd ("PKCstar4")
+	r51_52: 	PKC(C1!1,C2~c3,S_TKc~B).AA(r!1) <-> PKC(C1!1,C2~c3,S_TKc~F).AA(r!1) k51, k52
+	
+	# PKC(Ca)3 binds AA
+	r53_54: 	PKC(C1,C2~c3,S_TKc~B) + AA(r) <-> PKC(C1!1,C2~c3,S_TKc~B).AA(r!1) k53, k54
+	
+	# PKC(AA)* binds Ca
+	r55_56: 	PKC(C1!1,C2~c0,S_TKc~F).AA(r!1) + Ca(r) <-> PKC(C1!1,C2~c1,S_TKc~F).AA(r!1) k55, k56 # 30
+	
+	# PKC(Ca)3* binds AA (PKCstar <-> PKCstar4)
+	r57_58: 	PKC(C1,C2~c3,S_TKc~F) + AA(r) <-> PKC(C1!1,C2~c3,S_TKc~F).AA(r!1) k57, k58
+	
+	
+	######## MAPK cascade #########
+	###############################
+	
+	### Raf act/deact
+	# Phos of Raf_act by PKC* (rxns 59 - 70 represented here, since all have the same rates)
+	r59_60:		Raf_act(cat~U) + PKC(S_TKc~F) <-> Raf_act(cat~U!1).PKC(S_TKc~F!1) k59, k60
+	r61:		Raf_act(cat~U!1).PKC(S_TKc~F!1) -> Raf_act(cat~P) + PKC(S_TKc~F) k61
+	
+	# Dephos of Raf_act (passive)
+	r71: 		Raf_act(cat~P) -> Raf_act(cat~U) k71
+	
+	# Phos of Raf by Raf_act
+	r72_73:		Raf(STYKc~U) + Raf_act(cat~P) <-> Raf(STYKc~U!1).Raf_act(cat~P!1) k72, k73 # 35
+	r74:		Raf(STYKc~U!1).Raf_act(cat~P!1) -> Raf(STYKc~P) + Raf_act(cat~P) k74
+	
+	# Dephos of Raf* by PP5
+	r75_76:		Raf(STYKc~P) + PP5(PP2Ac) <-> Raf(STYKc~P!1).PP5(PP2Ac!1) k75, k76
+	r77: 		Raf(STYKc~P!1).PP5(PP2Ac!1) -> Raf(STYKc~U) + PP5(PP2Ac) k77
+	
+	### MEK act/deact
+	# Phos of MEK-S218 by Raf*
+	r78_79: 	MEK(S218~U,S222~U,S_TKc) + Raf(STYKc~P) <-> MEK(S218~U!1,S222~U,S_TKc).Raf(STYKc~P!1) k78, k79
+	r80:		MEK(S218~U!1,S222~U,S_TKc).Raf(STYKc~P!1) -> MEK(S218~P,S222~U,S_TKc) + Raf(STYKc~P) k80 # 40
+	
+	# Phos of MEK-S222 by Raf*
+	r81_82: 	MEK(S218~P,S222~U,S_TKc) + Raf(STYKc~P) <-> MEK(S218~P,S222~U!1,S_TKc).Raf(STYKc~P!1) k81, k82
+	r83:		MEK(S218~P,S222~U!1,S_TKc).Raf(STYKc~P!1) -> MEK(S218~P,S222~P,S_TKc) + Raf(STYKc~P) k83
+	
+	# Dephos of MEK-S222 by PP2A
+	r84_85: 	MEK(S218~P,S222~P,S_TKc) + PP2A(PP2Ac) <-> MEK(S218~P,S222~P!1,S_TKc).PP2A(PP2Ac!1) k84, k85
+	r86: 		MEK(S218~P,S222~P!1,S_TKc).PP2A(PP2Ac!1) -> MEK(S218~P,S222~U,S_TKc) + PP2A(PP2Ac) k86
+	
+	# Dephos of MEK-S218 by PP2A
+	r87_88:		MEK(S218~P,S222~U,S_TKc) + PP2A(PP2Ac) <-> MEK(S218~P!1,S222~U,S_TKc).PP2A(PP2Ac!1) k87, k88 #45
+	k89:		MEK(S218~P!1,S222~U,S_TKc).PP2A(PP2Ac!1) -> MEK(S218~U,S222~U,S_TKc) + PP2A(PP2Ac) k89
+	
+	### ERK act/deact
+	# Phos of ERK-Y187 by MEK*
+	r90_91:		ERK(Y187~U,T185~U,S_TKc) + MEK(S218~P,S222~P,S_TKc) <-> ERK(Y187~U!1,T185~U,S_TKc).MEK(S218~P,S222~P,S_TKc!1) k90, k91
+	r92: 		ERK(Y187~U!1,T185~U,S_TKc).MEK(S218~P,S222~P,S_TKc!1) -> ERK(Y187~P,T185~U,S_TKc) + MEK(S218~P,S222~P,S_TKc) k92
+	
+	# Phos of ERK-T185 by MEK*
+	r93_94:		ERK(Y187~P,T185~U,S_TKc) + MEK(S218~P,S222~P,S_TKc) <-> ERK(Y187~P,T185~U!1,S_TKc).MEK(S218~P,S222~P,S_TKc!1) k93, k94
+	r95: 		ERK(Y187~P,T185~U!1,S_TKc).MEK(S218~P,S222~P,S_TKc!1) -> ERK(Y187~P,T185~P,S_TKc) + MEK(S218~P,S222~P,S_TKc) k95 # 50
+	
+	# Dehos of ERK-T185 by MKP
+	r96_97:		ERK(Y187~P,T185~P,S_TKc) + MKP(DSPc) <-> ERK(Y187~P,T185~P!1,S_TKc).MKP(DSPc!1) k96, k97
+	r98: 		ERK(Y187~P,T185~P!1,S_TKc).MKP(DSPc!1) -> ERK(Y187~P,T185~U,S_TKc) + MKP(DSPc) k98
+	
+	# Dehos of ERK-Y187 by MKP
+	r99_100:	ERK(Y187~P,T185~U,S_TKc) + MKP(DSPc) <-> ERK(Y187~P!1,T185~U,S_TKc).MKP(DSPc!1) k99, k100
+	r101:		ERK(Y187~P!1,T185~U,S_TKc).MKP(DSPc!1) -> ERK(Y187~U,T185~U,S_TKc) + MKP(DSPc) k101
+	
+	########## cPLA2 ##########
+	###########################
+	
+	# cPLA2 binds 2Ca
+	r102_103:	cPLA2(C2~c0,plb~cyt,S505~U,PLAc~B) + Ca(r) <-> cPLA2(C2~c1,plb~cyt,S505~U,PLAc~B) k102, k103 #55
+	r104_105:	cPLA2(C2~c1,plb~cyt,S505~U,PLAc~B) + Ca(r) <-> cPLA2(C2~c2,plb~cyt,S505~U,PLAc~B) k104, k105
+	
+	# Act'n of (Ca2)cPLA2 (implicit translocation)
+	r106_107:	cPLA2(C2~c2,plb~cyt,S505~U,PLAc~B) <-> cPLA2(C2~c2,plb~memb,S505~U,PLAc~F) k106, k107
+	
+	# Transloc of (Ca)cPLA2
+	r108_109:	cPLA2(C2~c1,plb~cyt,S505~U,PLAc~B) <-> cPLA2(C2~c1,plb~memb,S505~U,PLAc~B) k108, k109
+	
+	# Transloc of cPLA2 basal
+	r110_111: 	cPLA2(C2~c0,plb~cyt,S505~U,PLAc~B) <-> cPLA2(C2~c0,plb~memb,S505~U,PLAc~B) k110, k111
+	
+	# cPLA2memb binds Ca
+	r112_113: 	cPLA2(C2~c0,plb~memb,S505~U,PLAc~B) + Ca(r) <-> cPLA2(C2~c1,plb~memb,S505~U,PLAc~B) k112, k113 # 60
+	
+	# (Ca)cPLA2memb binds Ca, and activates
+	r114_115: 	cPLA2(C2~c1,plb~memb,S505~U,PLAc~B) + Ca(r) <-> cPLA2(C2~c2,plb~memb,S505~U,PLAc~F) k114, k115
+	
+	# Prod of AA by (Ca2)cPLA2*
+	r116_117:	cPLA2(C2~c2,plb~memb,S505~U,PLAc~F) <-> cPLA2(C2~c2,plb~memb,S505~U,PLAc~F!1).APC(r!1) k116, k117 DeleteMolecules
+	r118:		cPLA2(C2~c2,plb~memb,S505~U,PLAc~F!1).APC(r!1) -> cPLA2(C2~c2,plb~memb,S505~U,PLAc~F) + AA(r) k118 DeleteMolecules
+	
+	# Phos of cPLA2cyt (all inactive forms; i.e., Ca-independent) by ERK* (these two rules encompass rxns 119 - 127)
+	r119_120:	cPLA2(plb~cyt,S505~U,PLAc~B) + ERK(Y187~P,T185~P,S_TKc) <-> cPLA2(plb~cyt,S505~U!1,PLAc~B).ERK(Y187~P,T185~P,S_TKc!1) k119, k120
+	r121:		cPLA2(plb~cyt,S505~U!1,PLAc~B).ERK(Y187~P,T185~P,S_TKc!1) -> cPLA2(plb~cyt,S505~P,PLAc~B) + ERK(Y187~P,T185~P,S_TKc) k121 #65
+	
+	# Dephos of cPLA2cytP by PP2A, Ca-independent (rxns 128 - 136)
+	r128_129:	cPLA2(plb~cyt,S505~P,PLAc~B) + PP2A(PP2Ac) <-> cPLA2(plb~cyt,S505~P!1,PLAc~B).PP2A(PP2Ac!1) k128, k129
+	k130:		cPLA2(plb~cyt,S505~P!1,PLAc~B).PP2A(PP2Ac!1) -> cPLA2(plb~cyt,S505~U,PLAc~B) + PP2A(PP2Ac) k130
+	
+	# Dephos of cPLA2cytP by PP1, Ca-independent (rxns 137 - 145)
+	r137_138:	cPLA2(plb~cyt,S505~P,PLAc~B) + PP1(PP2Ac) <-> cPLA2(plb~cyt,S505~P!1,PLAc~B).PP1(PP2Ac!1) k137, k138
+	r139: 		cPLA2(plb~cyt,S505~P!1,PLAc~B).PP1(PP2Ac!1) -> cPLA2(plb~cyt,S505~U,PLAc~B) + PP1(PP2Ac) k139
+	
+	# Act'n of cPLA2cytP
+	r146_147:	cPLA2(C2~c0,plb~cyt,S505~P,PLAc~B) <-> cPLA2(C2~c0,plb~memb,S505~P,PLAc~F) k146, k147 #70
+	
+	# Prod of AA by cPLA2**
+	r148_149: 	cPLA2(C2~c0,plb~memb,S505~P,PLAc~F) <-> cPLA2(C2~c0,plb~memb,S505~P,PLAc~F!1).APC(r!1) k148, k149 DeleteMolecules
+	r150:		cPLA2(C2~c0,plb~memb,S505~P,PLAc~F!1).APC(r!1) -> cPLA2(C2~c0,plb~memb,S505~P,PLAc~F) + AA(r) k150 DeleteMolecules
+	
+	# Act'n of (Ca)cPLA2cytP
+	r151_152: 	cPLA2(C2~c1,plb~cyt,S505~P,PLAc~B) <-> cPLA2(C2~c1,plb~memb,S505~P,PLAc~F) k151, k152
+	
+	# Prod of AA by (Ca)cPLA2**
+	r153_154:	cPLA2(C2~c1,plb~memb,S505~P,PLAc~F) <-> cPLA2(C2~c1,plb~memb,S505~P,PLAc~F!1).APC(r!1) k153, k154 DeleteMolecules
+	r155:		cPLA2(C2~c1,plb~memb,S505~P,PLAc~F!1).APC(r!1) -> cPLA2(C2~c1,plb~memb,S505~P,PLAc~F) + AA(r) k155 DeleteMolecules #75
+	
+	# Act'n of (Ca2)cPLA2cytP 
+	r156_157:	cPLA2(C2~c2,plb~cyt,S505~P,PLAc~B) <-> cPLA2(C2~c2,plb~memb,S505~P,PLAc~F) k156, k157
+	
+	# Prod of AA by (Ca2)cPLA2**
+	r158_159:	cPLA2(C2~c2,plb~memb,S505~P,PLAc~F) <-> cPLA2(C2~c2,plb~memb,S505~P,PLAc~F!1).APC(r!1) k158, k159 DeleteMolecules
+	r160:		cPLA2(C2~c2,plb~memb,S505~P,PLAc~F!1).APC(r!1) -> cPLA2(C2~c2,plb~memb,S505~P,PLAc~F) + AA(r) k160 DeleteMolecules
+	
+	# cPLA2cytP binds Ca
+	r161_162:	cPLA2(C2~c0,plb~cyt,S505~P,PLAc~B) + Ca(r) <-> cPLA2(C2~c1,plb~cyt,S505~P,PLAc~B) k161, k162
+	
+	# cPLA2** binds Ca
+	r163_164: 	cPLA2(C2~c0,plb~memb,S505~P,PLAc~F) + Ca(r) <-> cPLA2(C2~c1,plb~memb,S505~P,PLAc~F) k163, k164 #80
+	
+	# (Ca)cPLA2cytP binds Ca
+	r165_166:	cPLA2(C2~c1,plb~cyt,S505~P,PLAc~B) + Ca(r) <-> cPLA2(C2~c2,plb~cyt,S505~P,PLAc~B) k165, k166
+	
+	# (Ca)cPLA2** binds Ca
+	r167_168:	cPLA2(C2~c1,plb~memb,S505~P,PLAc~F) + Ca(r) <-> cPLA2(C2~c2,plb~memb,S505~P,PLAc~F) k167, k168
+	
+	# Degrad of AA (passive)
+	r169:		AA(r) -> Trash() k169
+	
+	######### AMPAR phos and trafficking #########
+	##############################################
+	
+	# Phos of AMPAR-S880_syn by PKC* (all forms) (rxns 170 - 181)
+	r170_171: 	AMPAR(loc~syn,S880~U) + PKC(S_TKc~F) <-> AMPAR(loc~syn,S880~U!1).PKC(S_TKc~F!1) k170, k171
+	r172:		AMPAR(loc~syn,S880~U!1).PKC(S_TKc~F!1) -> AMPAR(loc~syn,S880~P) + PKC(S_TKc~F) k172 #85
+	
+	# Dephos of AMPAR-S880_syn by PP2A (these rules represent all dephos of AMPARs, since they happen 
+	#  at the same rate regardless of location)
+	r182_183:	AMPAR(S880~P) + PP2A(PP2Ac) <-> AMPAR(S880~P!1).PP2A(PP2Ac!1) k182, k183
+	r184:		AMPAR(S880~P!1).PP2A(PP2Ac!1) -> AMPAR(S880~U) + PP2A(PP2Ac) k184
+	
+	# GRIP binds AMPAR_syn
+	r185_186:	AMPAR(loc~syn,S880~U,ctd) + GRIP(PDZ) <-> AMPAR(loc~syn,S880~U,ctd!1).GRIP(PDZ!1) k185, k186
+	
+	# GRIP binds AMPAR_synP
+	r187_188:	AMPAR(loc~syn,S880~P,ctd) + GRIP(PDZ) <-> AMPAR(loc~syn,S880~P,ctd!1).GRIP(PDZ!1) k187, k188
+	
+	# Trafficking of AMPAR_syn to ext
+	r189_190: 	AMPAR(loc~syn,S880~U,ctd) <-> AMPAR(loc~ext,S880~U,ctd) k189, k190 #90
+	
+	# Trafficking of AMPAR_synP to ext
+	r191_192:	AMPAR(loc~syn,S880~P,ctd) <-> AMPAR(loc~ext,S880~P,ctd) k191, k192
+	
+	# Trafficking of AMPAR_ext to dend
+	r196_197:	AMPAR(loc~ext,S880~U,ctd) <-> AMPAR(loc~dend,S880~U,ctd) k196, k197
+	
+	# Trafficking of AMPAR_extP to dend
+	r198_199:	AMPAR(loc~ext,S880~P,ctd) <-> AMPAR(loc~dend,S880~P,ctd) k198, k199
+	
+	# Trafficking of AMPAR_dendP to cyt
+	r203_204:	AMPAR(loc~dend,S880~P,ctd) <-> AMPAR(loc~cyt,S880~P,ctd) k203, k204
+	
+	
+	### Feedback Relationships ###
+	##############################
+	
+	# ERK-Raf positive feedback
+	f1_fb:		Raf(STYKc~U) + ERK(Y187~P,T185~P,S_TKc) <-> Raf(STYKc~U!1).ERK(Y187~P,T185~P,S_TKc!1) kfb_f1, kfb_b1
+	f1_c:		Raf(STYKc~U!1).ERK(Y187~P,T185~P,S_TKc!1) -> Raf(STYKc~P) + ERK(Y187~P,T185~P,S_TKc) kfb_c1
+	
+end reaction rules
+
+end model
+
+## actions ##
+# construct reaction network
+generate_network({overwrite=>1,TextReaction=>0})
+
+
+# Equilibrate
+simulate_ode({suffix=>"equil",t_end=>3000,n_steps=>3000})
+
+# deterministic run
+simulate_ode({suffix=>"ode",t_end=>1000,n_steps=>1000})
+
+setParameter("CaInflux","47052")
+simulate_ode({suffix=>"ode",continue=>1,t_end=>1001,n_steps=>1})
+setParameter("CaInflux","0")
+
+simulate_ode({suffix=>"ode",continue=>1,t_end=>4600,n_steps=>3599})

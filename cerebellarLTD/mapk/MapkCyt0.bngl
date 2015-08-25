@@ -1,0 +1,225 @@
+######################################################################################
+# Implementation of the cyoplasmic MAPK cascade.                                     #
+# Based on Kocieniewski et al., 2012 												 #
+# Feedback series																	 #
+#																					 #
+# Nov. 20, 2013																		 #
+######################################################################################
+
+##### Change Log: #####
+
+### Version 0 is the preliminary implementation, without any feedback.  
+# It is the same as version 5a of the basic MAPK models, with the exception that
+#  it adds the Raf_act molecule and the associated activation step in preparation
+#  for the addition of the PKC-MAPK-PLA2 feedback loop.
+
+# Here the signal activates Raf_act, which in turn activates Raf.  The rest of the 
+#  is as in 5a.
+# 
+###
+
+
+
+
+begin model
+begin parameters
+	f		1.0				# Volume scaling factor (also applies to the Ca influx and leak rates)
+	NA 		6.0221415e+23	# Avogadro's number (molecules/mol)
+	V  		f*2.0e-12		# Cell volume 
+	scale 	NA*V*1e-6		# scaling factor for concentrations and rate constants
+
+	### factors for rate variation ###
+	dephos 		1.0 # dephosphorylation factor
+	fPhosph		1.0
+	
+	################# Rate constants #################
+	s			0 # stimulus
+	pcyt		1.20443/scale
+	pscaff		100
+	a			1.20443/scale
+	au			1e-6
+	d1			0.1
+	d2			100
+	u			0.1 
+	
+	### From A & DS
+	k71			1*dephos
+	k72			1/scale
+	k73			2
+	k74			1.5
+	k75			0.55/scale
+	k76			2
+	k77			0.5*dephos
+	k78			0.65/scale
+	k79			0.065
+	k80			1
+	k81			0.65/scale
+	k82			0.065
+	k83			1
+	k84			0.75/scale
+	k85			2
+	k86			0.5*dephos
+	k87			0.75/scale
+	k88			2
+	k89			0.5*dephos
+	k90			16.2/scale
+	k91			0.6
+	k92			0.15
+	k93			16.2/scale
+	k94			0.6
+	k95			0.3
+	k96			28/scale
+	k97			0.56
+	k98			0.14*dephos
+	k99			13/scale
+	k100		0.396
+	k101		0.099*dephos
+	
+	
+	############### Initial Concentrations ###############
+	Raf_act_init	0.5*scale
+	
+	Raf_init		0.1*scale
+	MEK_init		1.5*scale
+	ERK_init		1*scale
+	
+	PP5_init		1*scale*fPhosph
+	PP2A_init		1.5*scale*fPhosph
+	MKP_init		0.26*scale*fPhosph
+	
+	KSR_init		0.083027*scale
+end parameters
+
+begin molecule types
+	# Kinases
+	Raf_act(cat~U~P)
+	
+	Raf(STYKc~U~P)
+	MEK(S218~U~P,S222~U~P,S_TKc)
+	ERK(T185~U~P,Y187~U~P,S_TKc)
+	
+	# Phosphatases
+	MKP(DSPc)
+	PP2A(PP2Ac)
+	PP5(PP2Ac)
+	
+end molecule types
+	
+begin seed species
+	Raf_act(cat~U)						Raf_act_init
+	
+	Raf(STYKc~U)						Raf_init
+	MEK(S218~U,S222~U,S_TKc)			MEK_init
+	ERK(T185~U,Y187~U,S_TKc)			ERK_init
+	
+	MKP(DSPc)							MKP_init
+	PP2A(PP2Ac)							PP2A_init
+	PP5(PP2Ac)							PP5_init
+end seed species
+
+begin observables
+	# MAPK components
+	#Molecules	Raf_act_active		Raf_act(cat~P)
+	Molecules	Raf_active			Raf(STYKc~P!?)
+	Molecules	MEK_active			MEK(S218~P!?,S222~P!?,S_TKc!?)
+	Molecules 	ERK_active			ERK(T185~P!?,Y187~P!?,S_TKc!?)
+	
+end observables
+
+begin reaction rules
+	# Activation of Raf_act
+	s1: 		Raf_act(cat~U) -> Raf_act(cat~P) s
+	
+	# Dephos of Raf_act (passive)
+	r71: 		Raf_act(cat~P) -> Raf_act(cat~U) k71
+	
+	# Phos of Raf by Raf_act
+	r72_73:		Raf(STYKc~U) + Raf_act(cat~P) <-> Raf(STYKc~U!1).Raf_act(cat~P!1) k72, k73
+	r74:		Raf(STYKc~U!1).Raf_act(cat~P!1) -> Raf(STYKc~P) + Raf_act(cat~P) k74
+	
+	# Dephos of Raf* by PP5
+	r75_76:		Raf(STYKc~P) + PP5(PP2Ac) <-> Raf(STYKc~P!1).PP5(PP2Ac!1) k75, k76
+	r77: 		Raf(STYKc~P!1).PP5(PP2Ac!1) -> Raf(STYKc~U) + PP5(PP2Ac) k77
+	
+	### Activation of MEK by Raf (Cytoplasmic)
+	# Phos of MEK-S218 by Raf*
+	r78_79: 	MEK(S218~U,S222~?,S_TKc) + Raf(STYKc~P) <-> MEK(S218~U!1,S222~?,S_TKc).Raf(STYKc~P!1) k78, k79
+	r80:		MEK(S218~U!1,S222~?,S_TKc).Raf(STYKc~P!1) -> MEK(S218~P,S222~?,S_TKc) + Raf(STYKc~P) k80
+	
+	# Phos of MEK-S222 by Raf*
+	r81_82: 	MEK(S218~?,S222~U,S_TKc) + Raf(STYKc~P) <-> MEK(S218~?,S222~U!1,S_TKc).Raf(STYKc~P!1) k81, k82
+	r83:		MEK(S218~?,S222~U!1,S_TKc).Raf(STYKc~P!1) -> MEK(S218~?,S222~P,S_TKc) + Raf(STYKc~P) k83
+	
+	# Dephos of MEK-S222 by PP2A
+	r84_85: 	MEK(S218~?,S222~P,S_TKc) + PP2A(PP2Ac) <-> MEK(S218~?,S222~P!1,S_TKc).PP2A(PP2Ac!1) k84, k85
+	r86: 		MEK(S218~?,S222~P!1,S_TKc).PP2A(PP2Ac!1) -> MEK(S218~?,S222~U,S_TKc) + PP2A(PP2Ac) k86
+	
+	# Dephos of MEK-S218 by PP2A
+	r87_88:		MEK(S218~P,S222~?,S_TKc) + PP2A(PP2Ac) <-> MEK(S218~P!1,S222~?,S_TKc).PP2A(PP2Ac!1) k87, k88
+	k89:		MEK(S218~P!1,S222~?,S_TKc).PP2A(PP2Ac!1) -> MEK(S218~U,S222~?,S_TKc) + PP2A(PP2Ac) k89
+	
+	### Activation of ERK by MEK 
+	# Phos of ERK-Y187 by MEK*
+	r90_91:		ERK(Y187~U,T185~?,S_TKc) + MEK(S218~P,S222~P,S_TKc) <-> ERK(Y187~U!1,T185~?,S_TKc).MEK(S218~P,S222~P,S_TKc!1) k90, k91
+	r92: 		ERK(Y187~U!1,T185~?,S_TKc).MEK(S218~P,S222~P,S_TKc!1) -> ERK(Y187~P,T185~?,S_TKc) + MEK(S218~P,S222~P,S_TKc) k92
+	
+	# Phos of ERK-T185 by MEK*
+	r93_94:		ERK(Y187~?,T185~U,S_TKc) + MEK(S218~P,S222~P,S_TKc) <-> ERK(Y187~?,T185~U!1,S_TKc).MEK(S218~P,S222~P,S_TKc!1) k93, k94
+	r95: 		ERK(Y187~?,T185~U!1,S_TKc).MEK(S218~P,S222~P,S_TKc!1) -> ERK(Y187~?,T185~P,S_TKc) + MEK(S218~P,S222~P,S_TKc) k95
+	
+	# Dehos of ERK-T185 by MKP
+	r96_97:		ERK(Y187~?,T185~P,S_TKc) + MKP(DSPc) <-> ERK(Y187~?,T185~P!1,S_TKc).MKP(DSPc!1) k96, k97
+	r98: 		ERK(Y187~?,T185~P!1,S_TKc).MKP(DSPc!1) -> ERK(Y187~?,T185~U,S_TKc) + MKP(DSPc) k98
+	
+	# Dehos of ERK-Y187 by MKP
+	r99_100:	ERK(Y187~P,T185~?,S_TKc) + MKP(DSPc) <-> ERK(Y187~P!1,T185~?,S_TKc).MKP(DSPc!1) k99, k100
+	r101:		ERK(Y187~P!1,T185~?,S_TKc).MKP(DSPc!1) -> ERK(Y187~U,T185~?,S_TKc) + MKP(DSPc) k101
+	
+	
+end reaction rules
+
+end model
+
+## actions ##
+# construct reaction network
+generate_network({overwrite=>1})
+
+
+##### Equilibration
+simulate_ode({suffix=>"equil",t_end=>1000,n_steps=>1000})
+saveConcentrations()
+
+quit()
+
+##### Simulations
+
+### Weak stimulus
+# pre-stim
+simulate_ode({suffix=>"stim_0p01",t_end=>100,n_steps=>100})
+
+# stim
+setParameter("s","0.01")
+simulate_ode({suffix=>"stim_0p01",t_end=>1000,n_steps=>900,continue=>1})
+
+resetConcentrations()
+setParameter("s","0")
+
+### Medium stimulus
+# pre-stim
+simulate_ode({suffix=>"stim_0p1",t_end=>100,n_steps=>100})
+
+# stim
+setParameter("s","0.1")
+simulate_ode({suffix=>"stim_0p1",t_end=>1000,n_steps=>900,continue=>1})
+
+resetConcentrations()
+setParameter("s","0")
+
+### Strong stimulus
+# pre-stim
+simulate_ode({suffix=>"stim_1",t_end=>100,n_steps=>100})
+
+# stim
+setParameter("s","1")
+simulate_ode({suffix=>"stim_1",t_end=>1000,n_steps=>900,continue=>1})
+

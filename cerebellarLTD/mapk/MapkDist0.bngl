@@ -1,0 +1,282 @@
+######################################################################################
+# Implementation of the joint MAPK cascade.                                          #
+# Based on Kocieniewski et al., 2012 												 #
+# Feedback series																	 #
+#																					 #
+# Nov. 20, 2013																		 #
+######################################################################################
+
+##### Change Log: #####
+
+### Version 0 is the preliminary implementation, without any feedback.  
+# It is the same as version 5a of the basic MAPK models, with the exception that
+#  it adds the Raf_act molecule and the associated activation step in preparation
+#  for the addition of the PKC-MAPK-PLA2 feedback loop.
+
+# Here the signal activates Raf_act, which in turn activates Raf.  The rest of the 
+#  is as in 5a.
+# 
+###
+
+
+
+begin model
+begin parameters
+	f		1.0				# Volume scaling factor (also applies to the Ca influx and leak rates)
+	NA 		6.0221415e+23	# Avogadro's number (molecules/mol)
+	V  		f*2.0e-12		# Cell volume 
+	scale 	NA*V*1e-6		# scaling factor for concentrations and rate constants
+
+	### factors for rate variation ###
+	dephos 		1.0 # dephosphorylation factor
+	fPhosph		1.0
+	
+	################# Rate constants #################
+	s			0 # stimulus
+	pcyt		1.20443/scale
+	pscaff		1.0
+	a			1.20443/scale
+	au			1e-6
+	d1			0.1
+	d2			100
+	u			0.1 
+	
+	### From A & DS
+	k71			1*dephos
+	k72			1/scale
+	k73			2
+	k74			1.5
+	k75			0.55/scale
+	k76			2
+	k77			0.5*dephos
+	k78			0.65/scale
+	k79			0.065
+	k80			1
+	k81			0.65/scale
+	k82			0.065
+	k83			1
+	k84			0.75/scale
+	k85			2
+	k86			0.5*dephos
+	k87			0.75/scale
+	k88			2
+	k89			0.5*dephos
+	k90			16.2/scale
+	k91			0.6
+	k92			0.15
+	k93			16.2/scale
+	k94			0.6
+	k95			0.3
+	k96			28/scale
+	k97			0.56
+	k98			0.14*dephos
+	k99			13/scale
+	k100		0.396
+	k101		0.099*dephos
+	
+	#### Scaffold-mediated catalytic steps
+	skcat18		0.15*pscaff
+	skcat19		0.3*pscaff
+	skcat20		1*pscaff
+	skcat21		1*pscaff
+	skcat22		0.1*pscaff
+	
+	
+	############### Initial Concentrations ###############
+	Raf_act_init	0.5*scale
+	
+	Raf_init		0.1*scale
+	MEK_init		1.5*scale
+	ERK_init		1*scale
+	
+	PP5_init		1*scale*fPhosph
+	PP2A_init		1.5*scale*fPhosph
+	MKP_init		0.26*scale*fPhosph
+	
+	KSR_init		0.1*scale
+	
+end parameters
+
+begin molecule types
+	# Kinases
+	Raf_act(cat~U~P)
+	
+	Raf(STYKc~U~P,ksr)
+	MEK(S218~U~P,S222~U~P,S_TKc,ksr)
+	ERK(T185~U~P,Y187~U~P,S_TKc,ksr)
+	
+	# Phosphatases
+	MKP(DSPc)
+	PP2A(PP2Ac)
+	PP5(PP2Ac)
+	
+	KSR(raf,mek,erk)
+	
+end molecule types
+	
+begin seed species
+	Raf_act(cat~U)						Raf_act_init
+	
+	Raf(STYKc~U,ksr)					Raf_init
+	MEK(S218~U,S222~U,S_TKc,ksr)		MEK_init
+	ERK(T185~U,Y187~U,S_TKc,ksr)		ERK_init
+	
+	MKP(DSPc)							MKP_init
+	PP2A(PP2Ac)							PP2A_init
+	PP5(PP2Ac)							PP5_init
+	
+	KSR(raf,mek,erk)					0 #KSR_init
+end seed species
+
+begin observables
+	# MAPK components
+	#Molecules	Raf_act_active		Raf_act(cat~P)
+	Molecules	Raf_active			Raf(STYKc~P!?)
+	Molecules	MEK_active			MEK(S218~P!?,S222~P!?,S_TKc!?)
+	Molecules 	ERK_active			ERK(T185~P!?,Y187~P!?,S_TKc!?,ksr)
+	
+end observables
+
+begin reaction rules
+	#### Cytoplasmic Reactions ####
+	###############################
+	
+	# Activation of Raf_act
+	s1: 		Raf_act(cat~U) -> Raf_act(cat~P) s
+	
+	# Dephos of Raf_act (passive)
+	r71: 		Raf_act(cat~P) -> Raf_act(cat~U) k71
+	
+	# Phos of Raf by Raf_act
+	r72_73:		Raf(STYKc~U,ksr) + Raf_act(cat~P) <-> Raf(STYKc~U!1,ksr).Raf_act(cat~P!1) k72, k73
+	r74:		Raf(STYKc~U!1,ksr).Raf_act(cat~P!1) -> Raf(STYKc~P,ksr) + Raf_act(cat~P) k74
+	
+	# Dephos of Raf* by PP5
+	r75_76:		Raf(STYKc~P,ksr) + PP5(PP2Ac) <-> Raf(STYKc~P!1,ksr).PP5(PP2Ac!1) k75, k76
+	r77: 		Raf(STYKc~P!1,ksr).PP5(PP2Ac!1) -> Raf(STYKc~U,ksr) + PP5(PP2Ac) k77
+	
+	### MEK act/deact
+	# Phos of MEK-S218 by Raf*
+	r78_79: 	MEK(S218~U,S222~?,S_TKc,ksr) + Raf(STYKc~P,ksr) <-> \
+		MEK(S218~U!1,S222~?,S_TKc,ksr).Raf(STYKc~P!1,ksr) k78, k79
+	r80:		MEK(S218~U!1,S222~?,S_TKc,ksr).Raf(STYKc~P!1,ksr) -> \
+		MEK(S218~P,S222~?,S_TKc,ksr) + Raf(STYKc~P,ksr) k80 # 40
+	
+	# Phos of MEK-S222 by Raf*
+	r81_82: 	MEK(S218~?,S222~U,S_TKc,ksr) + Raf(STYKc~P,ksr) <-> MEK(S218~?,S222~U!1,S_TKc,ksr).Raf(STYKc~P!1,ksr) k81, k82
+	r83:		MEK(S218~?,S222~U!1,S_TKc,ksr).Raf(STYKc~P!1,ksr) -> MEK(S218~?,S222~P,S_TKc,ksr) + Raf(STYKc~P,ksr) k83
+	
+	# Dephos of MEK-S222 by PP2A
+	r84_85: 	MEK(S218~?,S222~P,S_TKc,ksr) + PP2A(PP2Ac) <-> MEK(S218~?,S222~P!1,S_TKc,ksr).PP2A(PP2Ac!1) k84, k85
+	r86: 		MEK(S218~?,S222~P!1,S_TKc,ksr).PP2A(PP2Ac!1) -> MEK(S218~?,S222~U,S_TKc,ksr) + PP2A(PP2Ac) k86
+	
+	# Dephos of MEK-S218 by PP2A
+	r87_88:		MEK(S218~P,S222~?,S_TKc,ksr) + PP2A(PP2Ac) <-> MEK(S218~P!1,S222~?,S_TKc,ksr).PP2A(PP2Ac!1) k87, k88 #45
+	k89:		MEK(S218~P!1,S222~?,S_TKc,ksr).PP2A(PP2Ac!1) -> MEK(S218~U,S222~?,S_TKc,ksr) + PP2A(PP2Ac) k89
+	
+	### ERK act/deact
+	# Phos of ERK-Y187 by MEK*
+	r90_91:		ERK(Y187~U,T185~?,S_TKc,ksr) + MEK(S218~P,S222~P,S_TKc,ksr) <-> \
+		ERK(Y187~U!1,T185~?,S_TKc,ksr).MEK(S218~P,S222~P,S_TKc!1,ksr) k90, k91
+	r92: 		ERK(Y187~U!1,T185~?,S_TKc,ksr).MEK(S218~P,S222~P,S_TKc!1,ksr) -> \
+		ERK(Y187~P,T185~?,S_TKc,ksr) + MEK(S218~P,S222~P,S_TKc,ksr) k92
+	
+	# Phos of ERK-T185 by MEK*
+	r93_94:		ERK(Y187~?,T185~U,S_TKc,ksr) + MEK(S218~P,S222~P,S_TKc,ksr) <-> \
+		ERK(Y187~?,T185~U!1,S_TKc,ksr).MEK(S218~P,S222~P,S_TKc!1,ksr) k93, k94
+	r95: 		ERK(Y187~?,T185~U!1,S_TKc,ksr).MEK(S218~P,S222~P,S_TKc!1,ksr) -> \
+		ERK(Y187~?,T185~P,S_TKc,ksr) + MEK(S218~P,S222~P,S_TKc,ksr) k95 # 50
+	
+	# Dehos of ERK-T185 by MKP
+	r96_97:		ERK(Y187~?,T185~P,S_TKc,ksr) + MKP(DSPc) <-> ERK(Y187~?,T185~P!1,S_TKc,ksr).MKP(DSPc!1) k96, k97
+	r98: 		ERK(Y187~?,T185~P!1,S_TKc,ksr).MKP(DSPc!1) -> ERK(Y187~?,T185~U,S_TKc,ksr) + MKP(DSPc) k98
+	
+	# Dehos of ERK-Y187 by MKP
+	r99_100:	ERK(Y187~P,T185~?,S_TKc,ksr) + MKP(DSPc) <-> ERK(Y187~P!1,T185~?,S_TKc,ksr).MKP(DSPc!1) k99, k100
+	r101:		ERK(Y187~P!1,T185~?,S_TKc,ksr).MKP(DSPc!1) -> ERK(Y187~U,T185~?,S_TKc,ksr) + MKP(DSPc) k101
+	
+	#### Scaffold reactions ####
+	############################
+	
+	# Association of Raf* and KSR
+	s11: Raf(STYKc~P,ksr) + KSR(raf) <-> Raf(STYKc~P,ksr!1).KSR(raf!1) a, d1
+	
+	# Dissociation of Raf (inactive) from KSR
+	s12: Raf(STYKc~U,ksr!1).KSR(raf!1) -> Raf(STYKc~U,ksr) + KSR(raf) d2
+	
+	# Constitutive association of MEK and KSR (all forms)
+	s13: MEK(ksr,S218~?,S222~?,S_TKc) + KSR(mek) <-> MEK(ksr!1,S218~?,S222~?,S_TKc).KSR(mek!1) a, d1
+	
+	# KSR binds inactive ERK (different rules for the 3 forms of inactive ERK)
+	s14: ERK(T185~U,Y187~U,ksr,S_TKc) + KSR(erk) <-> ERK(T185~U,Y187~U,ksr!1,S_TKc).KSR(erk!1) a, d1
+	s15: ERK(T185~P,Y187~U,ksr,S_TKc) + KSR(erk) <-> ERK(T185~P,Y187~U,ksr!1,S_TKc).KSR(erk!1) a, d1
+	s16: ERK(T185~U,Y187~P,ksr,S_TKc) + KSR(erk) <-> ERK(T185~U,Y187~P,ksr!1,S_TKc).KSR(erk!1) a, d1
+	
+	# Active ERK dissociates from KSR
+	s17: ERK(T185~P,Y187~P,ksr!1,S_TKc).KSR(erk!1) -> ERK(T185~P,Y187~P,ksr,S_TKc) + KSR(erk) d2
+	
+	#### Scaffold-mediated Enzymatic reactions
+	# phos of ERK-Y187 by MEK
+	s18: ERK(T185~?,Y187~U,ksr!1,S_TKc).KSR(erk!1,mek!2).MEK(S218~P,S222~P,ksr!2,S_TKc) -> \
+		ERK(T185~?,Y187~P,ksr,S_TKc) + KSR(erk,mek) + MEK(S218~P,S222~P,ksr,S_TKc) skcat18
+	
+	# phos of ERK-T185 by MEK
+	s19: ERK(T185~U,Y187~?,ksr!1,S_TKc).KSR(erk!1,mek!2).MEK(S218~P,S222~P,ksr!2,S_TKc) -> \
+		ERK(T185~P,Y187~?,ksr,S_TKc) + KSR(erk,mek) + MEK(S218~P,S222~P,ksr,S_TKc) skcat19
+	
+	# Phos of MEK-S218 by Raf
+	s20: MEK(S218~U,S222~?,ksr!1,S_TKc).KSR(mek!1,raf!2).Raf(ksr!2,STYKc~P) -> \
+		MEK(S218~P,S222~?,ksr,S_TKc) + KSR(mek,raf) + Raf(ksr,STYKc~P) skcat20
+	
+	# Phos of MEK-S222 by Raf
+	s21: MEK(S218~?,S222~U,ksr!1,S_TKc).KSR(mek!1,raf!2).Raf(ksr!2,STYKc~P) -> \
+		MEK(S218~?,S222~P,ksr,S_TKc) + KSR(mek,raf) + Raf(ksr,STYKc~P) skcat21
+	
+	
+end reaction rules
+
+end model
+
+## actions ##
+# construct reaction network
+generate_network({overwrite=>1})
+
+
+##### Equilibration
+simulate_ode({suffix=>"equil",t_end=>1000,n_steps=>1000})
+saveConcentrations()
+
+quit()
+
+##### Simulations
+
+### Weak stimulus
+# pre-stim
+simulate_ode({suffix=>"stim_0p01",t_end=>100,n_steps=>100})
+
+# stim
+setParameter("s","0.01")
+simulate_ode({suffix=>"stim_0p01",t_end=>1000,n_steps=>900,continue=>1})
+
+resetConcentrations()
+setParameter("s","0")
+
+### Medium stimulus
+# pre-stim
+simulate_ode({suffix=>"stim_0p1",t_end=>100,n_steps=>100})
+
+# stim
+setParameter("s","0.1")
+simulate_ode({suffix=>"stim_0p1",t_end=>1000,n_steps=>900,continue=>1})
+
+resetConcentrations()
+setParameter("s","0")
+
+### Strong stimulus
+# pre-stim
+simulate_ode({suffix=>"stim_1",t_end=>100,n_steps=>100})
+
+# stim
+setParameter("s","1")
+simulate_ode({suffix=>"stim_1",t_end=>1000,n_steps=>900,continue=>1})
+
